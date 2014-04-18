@@ -1,0 +1,85 @@
+<html>
+	<head>
+		<title>Rotten Tomatoes Movies</title>
+		<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+		<style type="text/css">
+			svg {
+				border: solid black 1px;
+			}
+		</style>
+	</head>
+	<body>
+		<form action="">
+			Decades:<br/>
+			<input id="forties" type="checkbox" name="year" value="40s">1940's<br/>
+			<input id="fifties" type="checkbox" name="year" value="50s">1950's<br/>
+			<input id="sixties" type="checkbox" name="year" value="60s">1960's<br/>
+			<input id="seventies" type="checkbox" name="year" value="70s">1970's<br/> 
+			<input id="eighties" type="checkbox" name="year" value="80s">1980's<br/>
+			<input id="ninties" type="checkbox" name="year" value="90s">1990's<br/>
+			<input id="twos" type="checkbox" name="year" value="2ks">2000-Present<br/>
+		</form>
+
+		<form action="">
+			Genres:<br/>
+			<input id="comedy" type="checkbox" name="genre" value="comedy">Comedy<br/>
+			<input id="horror" type="checkbox" name="genre" value="horror">Horror<br/>
+			<input id="romantic" type="checkbox" name="genre" value="romantic">Romantic<br/>
+			<input id="action" type="checkbox" name="genre" value="action">Action<br/> 
+			<input id="kids" type="checkbox" name="genre" value="kids">Kids<br/>
+		</form>
+
+		<form action="">
+			Criteria:<br/>
+			<input id="rating" type="radio" name="char" value="rating">MGAA Rating<br/>
+			<input id="critics" type="radio" name="char" value="critics">Critics Score<br/>
+			<input id="audience" type="radio" name="char" value="audience">Audience Score<br/>
+			<input id="runtime" type="radio" name="char" value="runtime">Runtime<br/>
+		</form>
+
+		<div id="movies"></div>
+
+		<script type="text/javascript">
+			var height = 800;
+			var width = 800;
+
+			var svg = d3.select("#movies").append("svg").attr("height", height).attr("width", width);
+
+			var xScale = d3.scale.linear().domain([0, 50]).range([0, width]);
+			var yScale = d3.scale.linear().domain([0, 50]).range([height, 0]);
+
+			var multSelectors = [];
+			var singleCharacteristic;
+
+			//Multiple selector possibilities 
+			d3.selectAll('input').on("click", function(){
+				var checked = d3.selectAll('input');
+
+				var counter = 0;
+
+				multSelectors = [];
+				singleCharacteristic = [];
+
+				checked[0].forEach(function(check){
+
+					if(d3.select("#"+check.id).property('checked') == true){
+						if(check.id == "rating" || check.id == "critics" || check.id == "audience" || check.id == "runtime"){
+							singleCharacteristic = check;
+						} else {
+							multSelectors.push(check);
+						};
+					};
+				});
+
+				console.log(multSelectors);
+				console.log(singleCharacteristic);
+
+			});
+
+
+		</script>
+
+
+	</body>
+
+</html>
