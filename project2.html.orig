@@ -1,0 +1,164 @@
+<html>
+	<head>
+		<title>Rotten Tomatoes Movies</title>
+		<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+<<<<<<< HEAD
+		<link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
+	    <script src="//code.jquery.com/jquery-1.9.1.js"></script>
+	    <script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+=======
+		<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+		<script src="sorting.js" charset="utf-8"></script>
+>>>>>>> d74f5e1c0aa9fa87a85b8e11aadb94bda1d1e339
+		<style type="text/css">
+			svg {
+				border: solid black 1px;
+			}
+		</style>
+	</head>
+	<body>
+		<form action="">
+			Decades:<br/>
+			<input id="forties" type="checkbox" name="year" value="40s">1940's<br/>
+			<input id="fifties" type="checkbox" name="year" value="50s">1950's<br/>
+			<input id="sixties" type="checkbox" name="year" value="60s">1960's<br/>
+			<input id="seventies" type="checkbox" name="year" value="70s">1970's<br/> 
+			<input id="eighties" type="checkbox" name="year" value="80s">1980's<br/>
+			<input id="ninties" type="checkbox" name="year" value="90s">1990's<br/>
+			<input id="twos" type="checkbox" name="year" value="2ks">2000-Present<br/>
+		</form>
+
+		<form action="">
+			Genres:<br/>
+			<input id="comedy" type="checkbox" name="genre" value="comedy">Comedy<br/>
+			<input id="horror" type="checkbox" name="genre" value="horror">Horror<br/>
+			<input id="romantic" type="checkbox" name="genre" value="romantic">Romantic<br/>
+			<input id="action" type="checkbox" name="genre" value="action">Action<br/> 
+			<input id="kids" type="checkbox" name="genre" value="kids">Kids<br/>
+		</form>
+
+		<form action="">
+			Criteria:<br/>
+			<input id="rating" type="radio" name="char" value="rating">MGAA Rating<br/>
+			<input id="critics" type="radio" name="char" value="critics">Critics Score<br/>
+			<input id="audience" type="radio" name="char" value="audience">Audience Score<br/>
+			<input id="runtime" type="radio" name="char" value="runtime">Runtime<br/>
+		</form>
+
+		<div id="movies"></div>
+
+		<script type="text/javascript">
+			var movies = [];
+			var height = 800;
+			var width = 800;
+
+			var svg = d3.select("#movies").append("svg").attr("height", height).attr("width", width);
+
+			var xScale = d3.scale.linear().domain([0, 50]).range([0, width]);
+			var yScale = d3.scale.linear().domain([0, 50]).range([height, 0]);
+
+			//User preferences 
+			var multSelectors = [];
+			var singleCharacteristic;
+
+			//Multiple selector possibilities 
+			d3.selectAll('input').on("click", function(){
+				var checked = d3.selectAll('input');
+
+				var counter = 0;
+
+				multSelectors = [];
+				singleCharacteristic = [];
+
+				checked[0].forEach(function(check){
+
+					if(d3.select("#"+check.id).property('checked') == true){
+						if(check.id == "rating" || check.id == "critics" || check.id == "audience" || check.id == "runtime"){
+							singleCharacteristic = check.id;
+						} else {
+							multSelectors.push(check);
+						};
+					};
+				});
+
+				//console.log(multSelectors);
+				console.log(singleCharacteristic);
+
+				var searchArray = [];
+
+				multSelectors.forEach( function(select){
+					console.log(select.id);
+					if(select.id == "forties"){
+						searchArray.push(1940);
+					} else if (select.id == "fifties"){
+						searchArray.push(1950)
+					} else if (select.id == "sixties"){
+						searchArray.push(1960)
+					} else if (select.id == "seventies"){
+						searchArray.push(1970)
+					} else if (select.id == "eighties"){
+						searchArray.push(1980)
+					} else if (select.id == "ninties"){
+						searchArray.push(1990)
+					} else if (select.id == "twos"){
+						searchArray.push(2000)
+					} else {
+						searchArray.push(select.id);
+					}
+				});
+
+				console.log(searchArray);
+				//Hit JSON Data with searchArray and characteristic!
+
+				/*
+				$.getJSON("data.json", function(data){
+				
+
+
+				});
+*/
+
+				var searchArray = [];
+
+				multSelectors.forEach( function(select){
+					console.log(select.id);
+					if(select.id == "forties"){
+						searchArray.push(1940);
+					} else if (select.id == "fifties"){
+						searchArray.push(1950)
+					} else if (select.id == "sixties"){
+						searchArray.push(1960)
+					} else if (select.id == "seventies"){
+						searchArray.push(1970)
+					} else if (select.id == "eighties"){
+						searchArray.push(1980)
+					} else if (select.id == "ninties"){
+						searchArray.push(1990)
+					} else if (select.id == "twos"){
+						searchArray.push(2000)
+					} else {
+						searchArray.push(select.id);
+					}
+				});
+
+				//console.log(searchArray);
+				//Hit JSON Data with searchArray and characteristic!
+
+			});
+
+			$( document ).ready(function() {
+				$.getJSON("data.json", function(data){
+					// global variable (from sorting.js) to store all movies.
+					movies = data;
+					
+					// DO ALL D3 STUFF HERE
+				});
+			});
+
+
+		</script>
+
+
+	</body>
+
+</html>

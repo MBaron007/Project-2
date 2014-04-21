@@ -43,6 +43,7 @@
 		<div id="movies"></div>
 
 		<script type="text/javascript">
+			var movies = [];
 			var height = 800;
 			var width = 800;
 
@@ -112,6 +113,41 @@
 				});
 */
 
+				var searchArray = [];
+
+				multSelectors.forEach( function(select){
+					console.log(select.id);
+					if(select.id == "forties"){
+						searchArray.push(1940);
+					} else if (select.id == "fifties"){
+						searchArray.push(1950)
+					} else if (select.id == "sixties"){
+						searchArray.push(1960)
+					} else if (select.id == "seventies"){
+						searchArray.push(1970)
+					} else if (select.id == "eighties"){
+						searchArray.push(1980)
+					} else if (select.id == "ninties"){
+						searchArray.push(1990)
+					} else if (select.id == "twos"){
+						searchArray.push(2000)
+					} else {
+						searchArray.push(select.id);
+					}
+				});
+
+				//console.log(searchArray);
+				//Hit JSON Data with searchArray and characteristic!
+
+			});
+
+			$( document ).ready(function() {
+				$.getJSON("data.json", function(data){
+					// global variable (from sorting.js) to store all movies.
+					movies = data;
+					
+					// DO ALL D3 STUFF HERE
+				});
 			});
 
 
