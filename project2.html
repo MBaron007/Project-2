@@ -80,6 +80,12 @@ genres = ['Musical & Performing Arts','Special Interest',
 
 		</form>
 
+		<form action="">
+			Ordering:<br/>
+			<input id="one" type="radio" name="char" value="rating">Lowest<br/>
+			<input id="zero" type="radio" name="char" value="rating">Highest<br/>
+		</form>
+
 		<div id="movies"></div>
 
 		<script type="text/javascript">
@@ -98,6 +104,7 @@ genres = ['Musical & Performing Arts','Special Interest',
 			var searchArray = [];
 			var genres = [];
 			var ratings = [];
+			var highLow;
 
 			//Multiple selector possibilities 
 			d3.selectAll('input').on("click", function(){
@@ -135,7 +142,11 @@ genres = ['Musical & Performing Arts','Special Interest',
 							singleCharacteristic = "Critics_Score";
 						} else if(check.id == "domesticgross"){
 							singleCharacteristic = "Domestic_Gross";
-						} else {
+						} else if(check.id == "zero"){
+							highLow = 0;
+						} else if(check.id == "one"){
+							highLow = 1;
+						}else {
 							multSelectors.push(check);
 						};
 					};
@@ -203,6 +214,7 @@ genres = ['Musical & Performing Arts','Special Interest',
 				console.log(singleCharacteristic);
 				console.log(genres);
 				console.log(ratings);
+				console.log(highLow);
 				//Hit JSON Data with searchArray and characteristic!
 
 				/*
@@ -220,8 +232,8 @@ genres = ['Musical & Performing Arts','Special Interest',
 					movies = data;
 					var relevant;
 
-					if(searchArray.length > 0 && singleCharacteristic != ""){
-						relevant = get_data(searchArray, genres, ratings, singleCharacteristic, 0);
+					if(searchArray.length > 0 && singleCharacteristic != "" && (highLow == 0 || highLow == 1)){
+						relevant = get_data(searchArray, genres, ratings, singleCharacteristic, highLow);
 					}
 
 					console.log("data?");
