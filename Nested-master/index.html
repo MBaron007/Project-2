@@ -34,7 +34,7 @@
 
   var postersID = [];
 
-  var svg = d3.select('#container').append("svg").attr("height", 100).attr("width", 100);
+  var svg = d3.select('#container').append("svg").attr("height", 300).attr("width", 300);
 
   $(document).ready(function(){
       $.getJSON("data.json", function(data) {
@@ -42,17 +42,20 @@
         var dataJSON = get_data(years,genres, ratings, variable, order);
 
         $.each(dataJSON.data, function(i) {
+          posters.push(dataJSON.data[i].Images["thumbnail"]);
           postersID.push({id: dataJSON.data[i].id, posters:dataJSON.data[i].Images["thumbnail"]});
         });
 
-        posterImages = svg.selectAll("image").data(postersID).enter().append("svg:image").attr("class", "box size21");
+        posterImages = svg.selectAll("image").data(postersID).enter().append("svg:image").attr("class", "box");
         posterImages
           .attr('xlink:href', function(d) {
               //console.log(d.posters);
               return d.posters;
           })
           .attr('width', 100)
-          .attr('height', 100);
+          .attr('height', 100)
+          .attr("x", 228)
+    .attr("y",53);
         $("#container").append(posterImages);
 
         //TODO
