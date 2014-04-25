@@ -60,7 +60,7 @@ var svg = d3.select("#grid").append("svg")
     .attr("class", "rect")
     .attr("width", rectGrid.nodeSize()[0])
     .attr("height", rectGrid.nodeSize()[1])
-    .attr("fill", "url(#pattern1)")
+    //.attr("fill", "url(#387253026)")
     .attr("transform", function(d) { return "translate(" + (d.x + 460)+ "," + d.y + ")"; })
     .style("opacity", 1e-6);
 
@@ -96,24 +96,36 @@ var svg = d3.select("#grid").append("svg")
           postersID.push({id: dataJSON.data[i].id, posters:dataJSON.data[i].Images["thumbnail"]});
         });
 
-        console.log(posters);
-        console.log(postersID);
+        //console.log(posters);
+        //console.log(postersID);
 
-        svg.data(postersID)
-          .append("defs")
-          .append("pattern")
-          .attr("id", function(post){
-            return post.id;
-          })
-          .attr("width", 20)
-          .attr("height", 20)
-            .append("image")
-            .attr("xlink:href", function(img){
-              return img.posters;
-            })  
-            .attr("width", 100)
-            .attr("height", 100);
+        svg.append("defs");
 
+        postersID.forEach(function(post){
+          svg.select("defs")
+            .append("pattern")
+            .attr("id", post.id)
+            .attr("width", 20)
+            .attr("height", 20)
+              .append("image")
+              .attr("xlink:href", post.posters)
+              .attr("width", 100)
+              .attr("height", 100);
+        });
+
+        var count = 0;
+
+          $("pattern").each(function(index){
+            var useID = $(this).attr("id");
+            useID = "url(#" + useID + ")";
+            var rec = $("rect")[count];
+            //attr("fill", useID);
+            rec.setAttribute('fill', useID);
+            count++;
+
+            });
+
+          /*
           var addedPosters = [];
           svg.selectAll("rect")
             .attr("fill", function(r){
@@ -124,6 +136,7 @@ var svg = d3.select("#grid").append("svg")
 
 
             })
+*/
 
 
 
