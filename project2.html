@@ -2,6 +2,7 @@
 	<head>
 		<title>Rotten Tomatoes Movies</title>
 		<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+		<script src="sorting.js"></script>
 		<link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
 	    <script src="//code.jquery.com/jquery-1.9.1.js"></script>
 	    <script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
@@ -14,30 +15,75 @@
 	<body>
 		<form action="">
 			Decades:<br/>
-			<input id="forties" type="checkbox" name="year" value="40s">1940's<br/>
-			<input id="fifties" type="checkbox" name="year" value="50s">1950's<br/>
-			<input id="sixties" type="checkbox" name="year" value="60s">1960's<br/>
-			<input id="seventies" type="checkbox" name="year" value="70s">1970's<br/> 
-			<input id="eighties" type="checkbox" name="year" value="80s">1980's<br/>
-			<input id="ninties" type="checkbox" name="year" value="90s">1990's<br/>
-			<input id="twos" type="checkbox" name="year" value="2ks">2000-Present<br/>
+			<!--2007-2013-->
+			<input id="seven" type="checkbox" name="year" value="2007">2007<br/>
+			<input id="eight" type="checkbox" name="year" value="2008">2008<br/>
+			<input id="nine" type="checkbox" name="year" value="2009">2009<br/>
+			<input id="ten" type="checkbox" name="year" value="2010">2010<br/> 
+			<input id="eleven" type="checkbox" name="year" value="80s">2011<br/>
+			<input id="twelve" type="checkbox" name="year" value="90s">2012<br/>
+			<input id="thirteen" type="checkbox" name="year" value="2ks">2013<br/>
+		</form>
+
+
+<!--
+
+genres = ['Musical & Performing Arts','Special Interest',
+	'Sports & Fitness','Television','Western'];
+-->
+
+		<form action="">
+			<!--Change values? Necessary?-->
+			Genres:<br/>
+			<input id="action" type="checkbox" name="genre" value="action">Action & Adventure<br/> 
+			<input id="animation" type="checkbox" name="genre" value="animation">Animation<br/>
+			<input id="arthouse" type="checkbox" name="genre" value="comedy">Art House & International<br/>
+			<input id="classics" type="checkbox" name="genre" value="comedy">Classics<br/>
+			<input id="comedy" type="checkbox" name="genre" value="comedy">Comedy<br/>
+			<input id="documentary" type="checkbox" name="genre" value="romantic">Documentary<br/>
+			<input id="drama" type="checkbox" name="genre" value="comedy">Drama<br/>
+			<input id="horror" type="checkbox" name="genre" value="horror">Horror<br/>
+			<input id="kids" type="checkbox" name="genre" value="kids">Kids & Family<br/>
+			<input id="musical" type="checkbox" name="genre" value="horror">Musical & Performing Arts<br/>
+			<input id="mystery" type="checkbox" name="genre" value="comedy">Mystery & Suspense<br/>
+			<input id="romance" type="checkbox" name="genre" value="romantic">Romance<br/>
+			<input id="scifi" type="checkbox" name="genre" value="romantic">Science Fiction & Fantasy<br/>
+			<input id="special" type="checkbox" name="genre" value="horror">Special Interests<br/>
+			<input id="sports" type="checkbox" name="genre" value="horror">Sports & Fitness<br/>
+			<input id="tv" type="checkbox" name="genre" value="horror">Television<br/>
+			<input id="western" type="checkbox" name="genre" value="horror">Western<br/>
 		</form>
 
 		<form action="">
-			Genres:<br/>
-			<input id="comedy" type="checkbox" name="genre" value="comedy">Comedy<br/>
-			<input id="horror" type="checkbox" name="genre" value="horror">Horror<br/>
-			<input id="romantic" type="checkbox" name="genre" value="romantic">Romantic<br/>
-			<input id="action" type="checkbox" name="genre" value="action">Action<br/> 
-			<input id="kids" type="checkbox" name="genre" value="kids">Kids<br/>
+			Rating:<br/>
+			<input id="G" type="checkbox" name="year" value="2007">G<br/>
+			<input id="PG" type="checkbox" name="year" value="2008">PG<br/>
+			<input id="PG-13" type="checkbox" name="year" value="2009">PG-13<br/>
+			<input id="R" type="checkbox" name="year" value="2010">R<br/> 
+			<input id="NC-17" type="checkbox" name="year" value="80s">NC-17<br/>
+			
 		</form>
+
 
 		<form action="">
 			Criteria:<br/>
-			<input id="rating" type="radio" name="char" value="rating">MGAA Rating<br/>
-			<input id="critics" type="radio" name="char" value="critics">Critics Score<br/>
-			<input id="audience" type="radio" name="char" value="audience">Audience Score<br/>
-			<input id="runtime" type="radio" name="char" value="runtime">Runtime<br/>
+			<input id="openingweekendtheaters" type="radio" name="char" value="rating">Number of Theaters In Opening Weekend<br/>
+			<input id="worldwide" type="radio" name="char" value="rating">Worldwide Gross Profit<br/>
+			<input id="openingweekend" type="radio" name="char" value="rating">Opening Weekend Revenue<br/>
+			<input id="audience" type="radio" name="char" value="rating">Audience Score<br/>
+			<input id="market" type="radio" name="char" value="rating">Market Profitability<br/>
+			<input id="boxofficeavg" type="radio" name="char" value="rating">Box Office Average Revenue Opening Weekend<br/>
+			<input id="budget" type="radio" name="char" value="rating">Budget<br/>
+			<input id="foreigngross" type="radio" name="char" value="rating">Foreign Gross Profit<br/>
+			<input id="critics" type="radio" name="char" value="rating">Critics Score<br/>
+			<input id="domesticgross" type="radio" name="char" value="rating">Domestic Gross Profit<br/>
+
+		</form>
+
+		<form action="">
+			Ordering:<br/>
+			<input id="one" type="radio" name="char" value="rating">Lowest<br/>
+			<input id="zero" type="radio" name="char" value="rating">Highest<br/>
 		</form>
 
 		<div id="movies"></div>
@@ -55,6 +101,10 @@
 			//User preferences 
 			var multSelectors = [];
 			var singleCharacteristic;
+			var searchArray = [];
+			var genres = [];
+			var ratings = [];
+			var highLow;
 
 			//Multiple selector possibilities 
 			d3.selectAll('input').on("click", function(){
@@ -64,25 +114,55 @@
 
 				multSelectors = [];
 				singleCharacteristic = [];
+				searchArray = [];
+				genres = [];
+				ratings = [];
 
 				checked[0].forEach(function(check){
 
+					//FIX THIS
 					if(d3.select("#"+check.id).property('checked') == true){
-						if(check.id == "rating" || check.id == "critics" || check.id == "audience" || check.id == "runtime"){
-							singleCharacteristic = check.id;
-						} else {
+						if(check.id == "openingweekendtheaters"){
+							singleCharacteristic = "Number_of_Theatres_in_Opening_Weekend";
+						} else if(check.id == "worldwide"){
+							singleCharacteristic = "Worldwide";
+						} else if(check.id == "openingweekend"){
+							singleCharacteristic = "Opening Weekend";
+						} else if(check.id == "audience"){
+							singleCharacteristic = "Audience_Score";
+						} else if(check.id == "market"){
+							singleCharacteristic = "Market_Profitability";
+						} else if(check.id == "boxofficeavg"){
+							singleCharacteristic = "Box_Office_Avg_Opening_Wknd";
+						} else if(check.id == "budget"){
+							singleCharacteristic = "Budget";
+						} else if(check.id == "foreigngross"){
+							singleCharacteristic = "Foreign_Gross";
+						} else if(check.id == "critics"){
+							singleCharacteristic = "Critics_Score";
+						} else if(check.id == "domesticgross"){
+							singleCharacteristic = "Domestic_Gross";
+						} else if(check.id == "zero"){
+							highLow = 0;
+						} else if(check.id == "one"){
+							highLow = 1;
+						}else {
 							multSelectors.push(check);
 						};
 					};
 				});
 
+<<<<<<< HEAD
 				//console.log("mult "+multSelectors);
 				//console.log("single "+singleCharacteristic);
+=======
+				//console.log(multSelectors);
+>>>>>>> 753904adf0f0748ed5358d2f28e75f5ec6e11d83
 
-				var searchArray = [];
 
 				multSelectors.forEach( function(select){
 					//console.log(select.id);
+<<<<<<< HEAD
 					if(select.id == "forties"){
 						searchArray.push(1940);
 					} else if (select.id == "fifties"){
@@ -97,12 +177,70 @@
 						searchArray.push(1990)
 					} else if (select.id == "twos"){
 						searchArray.push(2000)
+=======
+					if(select.id == "seven"){
+						searchArray.push(2007);
+					} else if (select.id == "eight"){
+						searchArray.push(2008)
+					} else if (select.id == "nine"){
+						searchArray.push(2009)
+					} else if (select.id == "ten"){
+						searchArray.push(2010)
+					} else if (select.id == "eleven"){
+						searchArray.push(2011)
+					} else if (select.id == "twelve"){
+						searchArray.push(2012)
+					} else if (select.id == "thirteen"){
+						searchArray.push(2013)
+					} else if (select.id == "action"){
+						genres.push("Action & Adventure")
+					} else if (select.id == "animation"){
+						genres.push("Animation")
+					} else if (select.id == "arthouse"){
+						genres.push("Art House & International")
+					} else if (select.id == "classics"){
+						genres.push("Classics")
+					} else if (select.id == "comedy"){
+						genres.push("Comedy")
+					} else if (select.id == "documentary"){
+						genres.push("Documentary")
+					} else if (select.id == "drama"){
+						genres.push("Drama")
+					} else if (select.id == "horror"){
+						genres.push("Horror")
+					} else if (select.id == "kids"){
+						genres.push("Kids & Family")
+					} else if (select.id == "musical"){
+						genres.push("Musical & Performing Arts")
+					} else if (select.id == "mystery"){
+						genres.push("Mystery & Suspense")
+					} else if (select.id == "romance"){
+						genres.push("Romance")
+					} else if (select.id == "scifi"){
+						genres.push("Science Fiction & Fantasy")
+					} else if (select.id == "special"){
+						genres.push("Special Interests")
+					} else if (select.id == "sports"){
+						genres.push("Sports & Fitness")
+					} else if (select.id == "tv"){
+						genres.push("Television")
+					} else if (select.id == "western"){
+						genres.push("Western")
+>>>>>>> 753904adf0f0748ed5358d2f28e75f5ec6e11d83
 					} else {
-						searchArray.push(select.id);
+						ratings.push(select.id);
 					}
 				});
 
+<<<<<<< HEAD
 				console.log("content"+searchArray);
+=======
+				console.log(searchArray);
+				console.log(singleCharacteristic);
+				console.log(genres);
+				console.log(ratings);
+				console.log(highLow);
+>>>>>>> 753904adf0f0748ed5358d2f28e75f5ec6e11d83
 				//Hit JSON Data with searchArray and characteristic!
 
 				/*
@@ -113,6 +251,7 @@
 				});
 */
 
+<<<<<<< HEAD
 				var searchArray = [];
 
 				multSelectors.forEach( function(select){
@@ -136,18 +275,26 @@
 					}
 				});
 
+=======
+>>>>>>> 753904adf0f0748ed5358d2f28e75f5ec6e11d83
 				//console.log(searchArray);
 				//Hit JSON Data with searchArray and characteristic!
-
-			});
-
-			$( document ).ready(function() {
 				$.getJSON("data.json", function(data){
 					// global variable (from sorting.js) to store all movies.
 					movies = data;
+					var relevant;
+
+					if(searchArray.length > 0 && singleCharacteristic != "" && (highLow == 0 || highLow == 1)){
+						relevant = get_data(searchArray, genres, ratings, singleCharacteristic, highLow);
+					}
+
+					console.log("data?");
+					console.log(relevant);
 					
 					// DO ALL D3 STUFF HERE
 				});
+
+
 			});
 
 

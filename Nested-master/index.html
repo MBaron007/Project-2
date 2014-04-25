@@ -45,13 +45,19 @@
           postersID.push({id: dataJSON.data[i].id, posters:dataJSON.data[i].Images["thumbnail"]});
         });
 
-        posterImages = svg.selectAll(".box size21").data(postersID).enter().append("svg:image").attr("class", "box size21");
-          posterImages
-            .attr("xlink:href", function(d) {
-                console.log(d.posters);
-                return d.posters;
-            });
+        posterImages = svg.selectAll("image").data(postersID).enter().append("svg:image").attr("class", "box size21");
+        posterImages
+          .attr('xlink:href', function(d) {
+              //console.log(d.posters);
+              return d.posters;
+          })
+          .attr('width', 100)
+          .attr('height', 100);
         $("#container").append(posterImages);
+
+        //TODO
+          //give x and y coordinates for every image initially
+          //then onchange every time, update the x and y values
 
         //THIS WORKS BELOW, DO NOT DELETE THIS
         //console.log(posters);
