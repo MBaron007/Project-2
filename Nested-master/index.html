@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Nested</title>
+<link href="style.css" rel="stylesheet" type="text/css" media="screen" />
+<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<script src="jquery.nested.js">
+//http://stackoverflow.com/questions/5130082/prototypes-and-nested-return-functions-help is a good link for understanding how to use the jquery.nested.js file which is an API
+</script> 
+<script src="sorting.js"></script>
+</head>
+<body>
+
+
+<a class="btn" id="prepend">Prepend</a>
+
+<div id="container">
+</div>
+
+<a class="btn" id="append">Append</a>
+
+
+  <script type="text/javascript" >
+  years =[2007];
+  genres = ["Comedy"];
+  ratings = ["PG"];
+  variable = "Audience_Score";
+  order = 0;
+  var moviesID = new Array();
+  var posters = new Array();
+  var posterImages;
+
+  var postersID = [];
+
+  var svg = d3.select('#container').append("svg").attr("height", 100).attr("width", 100);
+
+  $(document).ready(function(){
+      $.getJSON("data.json", function(data) {
+        movies = data;
+        var dataJSON = get_data(years,genres, ratings, variable, order);
+
+        $.each(dataJSON.data, function(i) {
+          postersID.push({id: dataJSON.data[i].id, posters:dataJSON.data[i].Images["thumbnail"]});
+        });
+
+        posterImages = svg.selectAll(".box size21").data(postersID).enter().append("svg:image").attr("class", "box size21");
+          posterImages
+            .attr("xlink:href", function(d) {
+                console.log(d.posters);
+                return d.posters;
+            });
+        $("#container").append(posterImages);
+
+        //THIS WORKS BELOW, DO NOT DELETE THIS
+        //console.log(posters);
+        // for (var i=0; i < posters.length; i++) {
+        //   console.log(posters[i]);
+        //   //refer to img class
+        //   var img = $(document.createElement('img'));
+        //   var newPoster = $("<img class='box size21' src='"+posters[i]+"'>");
+        //   $("#container").append(newPoster);
+        // }
+        console.log(posters.length);
+      });
+  });
+  
+
+  
+
+
+
+  // makeBoxes = function() {
+  //   var boxes = [],
+  //       count = posters.length;
+        
+
+  //   for (var i=0; i < count; i++ ) {
+  //     var box = document.createElement('img');
+  //     var className = $('box size21').attr('class');
+  //     console.log(className);
+  //     box.className = 'box size21'+'src='+posters[i];
+  //     // add box DOM node to array of new elements
+  //     boxes.push( box );
+  //   }
+
+  //   return boxes;
+  // };
+
+
+  //$(function() { 
+   
+    //$('#container').nested(); 
+    
+    // $('#prepend').click(function(){
+    //   var boxes = makeBoxes();
+    //   $('#container').prepend(boxes).nested('prepend',boxes);
+    // })
+    // $('#append').click(function(){
+    //   var boxes = makeBoxes();
+    //   $('#container').append(boxes).nested('append',boxes);     
+    //})
+
+  //});
+  
+  
+</script>
+
+  
+</body>
+</html>    

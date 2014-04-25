@@ -59,7 +59,7 @@
 			//Multiple selector possibilities 
 			d3.selectAll('input').on("click", function(){
 				var checked = d3.selectAll('input');
-
+				console.log(checked[0]);
 				var counter = 0;
 
 				multSelectors = [];
@@ -76,13 +76,13 @@
 					};
 				});
 
-				//console.log(multSelectors);
-				console.log(singleCharacteristic);
+				//console.log("mult "+multSelectors);
+				//console.log("single "+singleCharacteristic);
 
 				var searchArray = [];
 
 				multSelectors.forEach( function(select){
-					console.log(select.id);
+					//console.log(select.id);
 					if(select.id == "forties"){
 						searchArray.push(1940);
 					} else if (select.id == "fifties"){
@@ -102,7 +102,7 @@
 					}
 				});
 
-				console.log(searchArray);
+				console.log("content"+searchArray);
 				//Hit JSON Data with searchArray and characteristic!
 
 				/*
@@ -116,7 +116,7 @@
 				var searchArray = [];
 
 				multSelectors.forEach( function(select){
-					console.log(select.id);
+					//console.log(select.id);
 					if(select.id == "forties"){
 						searchArray.push(1940);
 					} else if (select.id == "fifties"){
