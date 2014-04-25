@@ -1,28 +1,80 @@
+
+<!--NEW STUFF-->
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html lang="en" xmlns:svg="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
 <head>
+<meta charset="utf-8">
+<style>
+body {
+  font-family: Helvetica;
+  font-size: 10px;
+}
+/*.point, .rect {
+  fill: #222;
+}
+*/
+</style>
+
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>Nested</title>
 <link href="style.css" rel="stylesheet" type="text/css" media="screen" />
-<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-<script src="jquery.nested.js">
-//http://stackoverflow.com/questions/5130082/prototypes-and-nested-return-functions-help is a good link for understanding how to use the jquery.nested.js file which is an API
-</script> 
 <script src="sorting.js"></script>
 </head>
 <body>
 
+  <div id="grid"></div>
+<script src="http://d3js.org/d3.v3.min.js"></script>
+<script src="d3-grid.js"></script>
+<script>
 
-<a class="btn" id="prepend">Prepend</a>
+var points = [];
+var rects = [{},{},{},{},{},{},{},{},{}];
 
-<div id="container">
-</div>
+var width = 960,
+    height = 500;
 
-<a class="btn" id="append">Append</a>
+//var pointGrid = d3.layout.grid()
+  //.points()
+  //.size([360, 360]);
+
+var rectGrid = d3.layout.grid()
+  .bands()
+  .size([360, 360])
+  .padding([0.05, 0.05]);
+
+var svg = d3.select("#grid").append("svg")
+  .attr({
+    width: width,
+    height: height
+  })
+.append("g")
+  .attr("transform", "translate(70,70)");
 
 
-  <script type="text/javascript" >
+
+  //From framework
+  var rect = svg.selectAll(".rect")
+    .data(rectGrid(rects));
+  rect.enter().append("rect")
+    .attr("class", "rect")
+    .attr("width", rectGrid.nodeSize()[0])
+    .attr("height", rectGrid.nodeSize()[1])
+    .attr("fill", "url(#pattern1)")
+    .attr("transform", function(d) { return "translate(" + (d.x + 460)+ "," + d.y + ")"; })
+    .style("opacity", 1e-6);
+
+  rect.transition()
+    .attr("width", rectGrid.nodeSize()[0])
+    .attr("height", rectGrid.nodeSize()[1])
+    .attr("transform", function(d) { return "translate(" + (d.x + 460)+ "," + d.y + ")"; })
+    .style("opacity", 1);
+  rect.exit().transition()
+    .style("opacity", 1e-6)
+    .remove();
+
+  //Larry's Code
+
   years =[2007];
   genres = ["Comedy"];
   ratings = ["PG"];
@@ -34,8 +86,6 @@
 
   var postersID = [];
 
-  var svg = d3.select('#container').append("svg").attr("height", 300).attr("width", 300);
-
   $(document).ready(function(){
       $.getJSON("data.json", function(data) {
         movies = data;
@@ -46,7 +96,41 @@
           postersID.push({id: dataJSON.data[i].id, posters:dataJSON.data[i].Images["thumbnail"]});
         });
 
-        posterImages = svg.selectAll("image").data(postersID).enter().append("svg:image").attr("class", "box");
+        console.log(posters);
+        console.log(postersID);
+
+        svg.data(postersID)
+          .append("defs")
+          .append("pattern")
+          .attr("id", function(post){
+            return post.id;
+          })
+          .attr("width", 20)
+          .attr("height", 20)
+            .append("image")
+            .attr("xlink:href", function(img){
+              return img.posters;
+            })  
+            .attr("width", 100)
+            .attr("height", 100);
+
+          var addedPosters = [];
+          svg.selectAll("rect")
+            .attr("fill", function(r){
+              var fill = "#";
+              for(var i = 0; i < postersID.length; i++){
+
+              }
+
+
+            })
+
+
+
+        /*
+        posterImages = svg.selectAll("rect").data(postersID).enter().append("svg:image").attr("class", "box");
+        console.log(posterImages);
+        
         posterImages
           .attr('xlink:href', function(d) {
               //console.log(d.posters);
@@ -55,8 +139,35 @@
           .attr('width', 100)
           .attr('height', 100)
           .attr("x", 228)
-    .attr("y",53);
-        $("#container").append(posterImages);
+          .attr("y",53);
+          */
+        /*
+        svg.selectAll("rect").data(postersID)
+          .each(function(datum, index) {
+            var rectBar = $(this)[0]; // Needs parent object, otherwise it will append inside rect
+            console.log(rectBar);
+            var num = 1;
+
+            for (var i = 0; i < num; i++) {
+             d3.select(rectBar)
+                .attr("fill", "url(#pattern1)");
+                //.append("svg:image")
+                //.attr('xlink:href', function(d) {
+                    //console.log(d.posters);
+                //    return d.posters;
+                //})
+                //.attr('width', 100)
+                //.attr('height', 100)
+                //.attr("x", 100)
+                //.attr("y",100);
+
+            }
+          });
+          */
+          
+  
+
+        $("#grid").append(posterImages);
 
         //TODO
           //give x and y coordinates for every image initially
@@ -74,48 +185,66 @@
         console.log(posters.length);
       });
   });
+
+/*
+var tick = setInterval(push, 500);
+
+function update() {
   
-
-  
-
-
-
-  // makeBoxes = function() {
-  //   var boxes = [],
-  //       count = posters.length;
-        
-
-  //   for (var i=0; i < count; i++ ) {
-  //     var box = document.createElement('img');
-  //     var className = $('box size21').attr('class');
-  //     console.log(className);
-  //     box.className = 'box size21'+'src='+posters[i];
-  //     // add box DOM node to array of new elements
-  //     boxes.push( box );
-  //   }
-
-  //   return boxes;
-  // };
+  var point = svg.selectAll(".point")
+    .data(pointGrid(points));
+  point.enter().append("circle")
+    .attr("class", "point")
+    .attr("r", 1e-6)
+    .attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; });
+  point.transition()
+    .attr("r", 5)
+    .attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; });
+  point.exit().transition()
+    .attr("r", 1e-6)
+    .remove();
 
 
-  //$(function() { 
-   
-    //$('#container').nested(); 
-    
-    // $('#prepend').click(function(){
-    //   var boxes = makeBoxes();
-    //   $('#container').prepend(boxes).nested('prepend',boxes);
-    // })
-    // $('#append').click(function(){
-    //   var boxes = makeBoxes();
-    //   $('#container').append(boxes).nested('append',boxes);     
-    //})
+  var rect = svg.selectAll(".rect")
+    .data(rectGrid(rects));
+  rect.enter().append("rect")
+    .attr("class", "rect")
+    .attr("width", rectGrid.nodeSize()[0])
+    .attr("height", rectGrid.nodeSize()[1])
+    .attr("transform", function(d) { return "translate(" + (d.x + 460)+ "," + d.y + ")"; })
+    .style("opacity", 1e-6);
+  rect.transition()
+    .attr("width", rectGrid.nodeSize()[0])
+    .attr("height", rectGrid.nodeSize()[1])
+    .attr("transform", function(d) { return "translate(" + (d.x + 460)+ "," + d.y + ")"; })
+    .style("opacity", 1);
+  rect.exit().transition()
+    .style("opacity", 1e-6)
+    .remove();
+}
 
-  //});
-  
-  
+
+function push() {
+  points.push({});
+  rects.push({});
+  update();
+  if (points.length > 15) {
+    clearInterval(tick);
+    tick = setInterval(pop, 500);
+  }
+}
+
+function pop() {
+  points.pop();
+  rects.pop();
+  update();
+  if (points.length < 2) {
+    clearInterval(tick);
+    tick = setInterval(push, 500);
+  }
+}
+*/
+
 </script>
-
-  
 </body>
-</html>    
+</html>
