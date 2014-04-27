@@ -1,5 +1,6 @@
 
-/*  
+/*
+	Quicksort reference: http://www.nczonline.net/blog/2012/11/27/computer-science-in-javascript-quicksort/  
 	Checking arr for at least one element of obj (if obj is an array) or obj if obj is not
 	if obj is an array: 
 		returns true if at least one value in arr is in Array
@@ -57,8 +58,7 @@ function get_data (years, genres, ratings, variable, order) {
 		}
 	});
 	// sort the movies we are using based on variable
-	quickSort(used, order, variable);
-	console.log(used);
+	used = quickSort(used, order, variable);
 	return {"data": used, "unused": unused};
 }
 
@@ -72,35 +72,36 @@ function swap(items, firstIndex, secondIndex){
 
 function partition(order, items, left, right, variable) {
 
-    var pivot = items[left][variable];
+    var pivot = items[left][variable],
+    	i = left,
+    	j = right;
 
-    while (left <= right) {
+    while (i <= j) {
 
-        //while (comparator(items[i], pivot)) {
         if (order == Order.low) {
-	        while (items[left][variable] < pivot) {
-	            left++;
+	        while (items[i][variable] < pivot) {
+	            i++;
 	        }
-	        while (items[right][variable] > pivot) {
-	            right--;
+	        while (items[j][variable] > pivot) {
+	            j--;
 	        }
 	    } else if (order == Order.high) {
-	    	while (items[left][variable] > pivot) {
-	            left++;
+	    	while (items[i][variable] > pivot) {
+	            i++;
 	        }
-	        while (items[right][variable] < pivot) {
-	            right--;
+	        while (items[j][variable] < pivot) {
+	            j--;
 	        }
 	    }
 
-        if (left <= right) {
-            swap(items, left, right);
-            left++;
-            right--;
+        if (i <= j) {
+            swap(items, i, j);
+            i++;
+            j--;
         }
     }
 
-    return left;
+    return i;
 }
 
 function recursiveQuickSort(items, left, right, order, variable) {
@@ -112,11 +113,11 @@ function recursiveQuickSort(items, left, right, order, variable) {
         index = partition(order, items, left, right, variable);
 
         if (left < index - 1) {
-            recursiveQuickSort(items, left, index - 1, order);
+            recursiveQuickSort(items, left, index - 1, order, variable);
         }
 
         if (right > index) {
-            recursiveQuickSort(items, index, right, order);
+            recursiveQuickSort(items, index, right, order, variable);
         }
 
     }
