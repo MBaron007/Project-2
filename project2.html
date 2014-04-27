@@ -1,4 +1,4 @@
-<html>
+<html lang="en" xmlns:svg="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
 	<head>
 		<title>Rotten Tomatoes Movies</title>
 		<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
@@ -10,7 +10,15 @@
 			svg {
 				border: solid black 1px;
 			}
+
+			form {
+				float : left;
+			}
 		</style>
+
+		<!--New imports for d3 grids-->
+		<script src="d3-grid.js"></script>
+		
 	</head>
 	<body>
 		<form action="">
@@ -86,10 +94,27 @@ genres = ['Musical & Performing Arts','Special Interest',
 			<input id="zero" type="radio" name="char" value="rating">Highest<br/>
 		</form>
 
-		<div id="movies"></div>
+		<p>Number of Films to Display:</p>
+		<select id="numMovies">
+			<option value="1">1</option>
+			<option value="2">2</option>
+			<option value="3">3</option>
+			<option value="4">4</option>
+			<option value="5">5</option>
+			<option value="6">6</option>
+			<option value="7">7</option>
+			<option value="8">8</option>
+			<option value="9" selected="selected">9</option>
+			<option value="10">10</option>
+			<option value="11">11</option>
+			<option value="12">12</option>
+		</select>
+
+		<div id="grid"></div>
 
 		<script type="text/javascript">
 			var movies = [];
+			/*
 			var height = 800;
 			var width = 800;
 
@@ -97,6 +122,7 @@ genres = ['Musical & Performing Arts','Special Interest',
 
 			var xScale = d3.scale.linear().domain([0, 50]).range([0, width]);
 			var yScale = d3.scale.linear().domain([0, 50]).range([height, 0]);
+			*/
 
 			//User preferences 
 			var multSelectors = [];
@@ -105,11 +131,162 @@ genres = ['Musical & Performing Arts','Special Interest',
 			var genres = [];
 			var ratings = [];
 			var highLow;
+			var numMovies = 9;
+
+			//movie data holders
+			var moviesID = new Array();
+  			var posters = new Array();
+ 			var posterImages;
+  			var postersID = [];
+
+			//CODE FROM NESTED
+			var points = [];
+			var rects = [];
+
+			for(var i = 0; i < rects.length; i++){
+				rects.pop();
+			}
+
+			for(var j = 0; j < numMovies; j++){
+				rects.push({});
+			}
+
+			var width = 600,
+			    height = 600;
+
+
+			var rectGrid = d3.layout.grid()
+			  .bands()
+			  .size([450, 450])
+			  .padding([0.05, 0.05]);
+
+			var svg = d3.select("#grid").append("svg")
+			  .attr({
+			    width: width,
+			    height: height
+			  })
+			.append("g")
+			  .attr("transform", "translate(70,70)");
+
+			  var rect = svg.selectAll(".rect")
+			    .data(rectGrid(rects));
+			  rect.enter().append("rect")
+			    .attr("class", "rect")
+			    .attr("width", rectGrid.nodeSize()[0])
+			    .attr("height", rectGrid.nodeSize()[1])
+			    //.attr("fill", "url(#387253026)")
+			    .attr("transform", function(d) { return "translate(" + (d.x + 0)+ "," + d.y + ")"; })
+			    .style("opacity", 1e-6);
+
+			  rect.transition()
+			    .attr("width", rectGrid.nodeSize()[0])
+			    .attr("height", rectGrid.nodeSize()[1])
+			    .attr("transform", function(d) { return "translate(" + (d.x + 0)+ "," + d.y + ")"; })
+			    .style("opacity", 1);
+			  rect.exit().transition()
+			    .style("opacity", 1e-6)
+			    .remove();
+
+			//function for getting data
+						//Hit JSON Data with searchArray and characteristic!
+			function retrieveData() {
+				$.getJSON("data.json", function(data){
+				// global variable (from sorting.js) to store all movies.
+				movies = data;
+				var relevant;
+
+				//console.log(searchArray);
+				//console.log(singleCharacteristic);
+				//console.log(highLow);
+				if(searchArray.length > 0 && singleCharacteristic != "" && (highLow == 0 || highLow == 1)){
+					//console.log("in here");
+					relevant = get_data(searchArray, genres, ratings, singleCharacteristic, highLow);
+				}
+
+				//console.log("data?");
+				console.log("Info:");
+				console.log(singleCharacteristic);
+				console.log(relevant);
+				
+				// DO ALL D3 STUFF HERE
+				if(relevant){
+					var sort_array = [];
+
+					var displayMovies = numMovies;
+					var count = 0;
+					//console.log("Number of movies: " + numMovies);
+
+					posters = [];
+					postersID = [];
+
+					$.each(relevant.data, function(i) {
+					  //if(count < numMovies){
+				          posters.push(relevant.data[i].Images["thumbnail"]);
+				          postersID.push({id: relevant.data[i].id, posters:relevant.data[i].Images["thumbnail"]});
+				          //count++;
+				      //}
+			        });
+
+				    //console.log(posters);
+				    //console.log("done with movies");
+					//console.log(postersID);
+
+					/*
+					postersID.forEach(function(movie){
+						console.log(movie);
+						var checkID = movie.id;
+
+						for (var i = 0; i < relevant.data.length; i++){
+							var newId = relevant.data[i].id;
+							if(newId == checkID){
+								//console.log("we have a match!");
+								movie.singleCharacteristic = relevant.data[i][singleCharacteristic];
+							}
+						}
+					});
+					*/
+
+					//console.log(postersID);
+					svg.selectAll("defs").remove();
+					svg.selectAll("pattern").remove();
+
+					svg.append("defs");
+					//console.log("defs added!");
+
+			        postersID.forEach(function(post){
+			          svg.select("defs")
+			            .append("pattern")
+			            .attr("id", post.id)
+			            .attr("width", 20)
+			            .attr("height", 20)
+			              .append("image")
+			              .attr("xlink:href", post.posters)
+			              .attr("width", 100)
+			              .attr("height", 100);
+			        });
+
+			        
+			        var counter = 0;
+
+			        $("pattern").each(function(index){
+			          var useID = $(this).attr("id");
+			          useID = "url(#" + useID + ")";
+			          var rec = $("rect")[counter];
+			          rec.setAttribute('fill', useID);
+			          counter++;
+			        });
+					          
+				    $("#grid").append(posterImages);
+				}
+
+			});
+
+			}
 
 			//Multiple selector possibilities 
 			d3.selectAll('input').on("click", function(){
 				var checked = d3.selectAll('input');
-				console.log(checked[0]);
+				//console.log(checked[0]);
 				var counter = 0;
 
 				multSelectors = [];
@@ -127,7 +304,7 @@ genres = ['Musical & Performing Arts','Special Interest',
 						} else if(check.id == "worldwide"){
 							singleCharacteristic = "Worldwide";
 						} else if(check.id == "openingweekend"){
-							singleCharacteristic = "Opening Weekend";
+							singleCharacteristic = "Opening_Weekend";
 						} else if(check.id == "audience"){
 							singleCharacteristic = "Audience_Score";
 						} else if(check.id == "market"){
@@ -143,167 +320,122 @@ genres = ['Musical & Performing Arts','Special Interest',
 						} else if(check.id == "domesticgross"){
 							singleCharacteristic = "Domestic_Gross";
 						} else if(check.id == "zero"){
-							highLow = 0;
+							highLow = Order.high;
 						} else if(check.id == "one"){
-							highLow = 1;
+							highLow = Order.low;
 						}else {
 							multSelectors.push(check);
 						};
 					};
 				});
 
-<<<<<<< HEAD
-				//console.log("mult "+multSelectors);
-				//console.log("single "+singleCharacteristic);
-=======
-				//console.log(multSelectors);
->>>>>>> 753904adf0f0748ed5358d2f28e75f5ec6e11d83
 
 
 				multSelectors.forEach( function(select){
 					//console.log(select.id);
-<<<<<<< HEAD
-					if(select.id == "forties"){
-						searchArray.push(1940);
-					} else if (select.id == "fifties"){
-						searchArray.push(1950)
-					} else if (select.id == "sixties"){
-						searchArray.push(1960)
-					} else if (select.id == "seventies"){
-						searchArray.push(1970)
-					} else if (select.id == "eighties"){
-						searchArray.push(1980)
-					} else if (select.id == "ninties"){
-						searchArray.push(1990)
-					} else if (select.id == "twos"){
-						searchArray.push(2000)
-=======
+
 					if(select.id == "seven"){
 						searchArray.push(2007);
 					} else if (select.id == "eight"){
-						searchArray.push(2008)
+						searchArray.push(2008);
 					} else if (select.id == "nine"){
-						searchArray.push(2009)
+						searchArray.push(2009);
 					} else if (select.id == "ten"){
-						searchArray.push(2010)
+						searchArray.push(2010);
 					} else if (select.id == "eleven"){
-						searchArray.push(2011)
+						searchArray.push(2011);
 					} else if (select.id == "twelve"){
-						searchArray.push(2012)
+						searchArray.push(2012);
 					} else if (select.id == "thirteen"){
-						searchArray.push(2013)
+						searchArray.push(2013);
 					} else if (select.id == "action"){
-						genres.push("Action & Adventure")
+						genres.push("Action & Adventure");
 					} else if (select.id == "animation"){
-						genres.push("Animation")
+						genres.push("Animation");
 					} else if (select.id == "arthouse"){
-						genres.push("Art House & International")
+						genres.push("Art House & International");
 					} else if (select.id == "classics"){
-						genres.push("Classics")
+						genres.push("Classics");
 					} else if (select.id == "comedy"){
-						genres.push("Comedy")
+						genres.push("Comedy");
 					} else if (select.id == "documentary"){
-						genres.push("Documentary")
+						genres.push("Documentary");
 					} else if (select.id == "drama"){
-						genres.push("Drama")
+						genres.push("Drama");
 					} else if (select.id == "horror"){
-						genres.push("Horror")
+						genres.push("Horror");
 					} else if (select.id == "kids"){
-						genres.push("Kids & Family")
+						genres.push("Kids & Family");
 					} else if (select.id == "musical"){
-						genres.push("Musical & Performing Arts")
+						genres.push("Musical & Performing Arts");
 					} else if (select.id == "mystery"){
-						genres.push("Mystery & Suspense")
+						genres.push("Mystery & Suspense");
 					} else if (select.id == "romance"){
-						genres.push("Romance")
+						genres.push("Romance");
 					} else if (select.id == "scifi"){
-						genres.push("Science Fiction & Fantasy")
+						genres.push("Science Fiction & Fantasy");
 					} else if (select.id == "special"){
-						genres.push("Special Interests")
+						genres.push("Special Interests");
 					} else if (select.id == "sports"){
 						genres.push("Sports & Fitness")
 					} else if (select.id == "tv"){
-						genres.push("Television")
+						genres.push("Television");
 					} else if (select.id == "western"){
-						genres.push("Western")
->>>>>>> 753904adf0f0748ed5358d2f28e75f5ec6e11d83
+						genres.push("Western");
 					} else {
 						ratings.push(select.id);
 					}
 				});
-<<<<<<< HEAD
 
-<<<<<<< HEAD
-				console.log("content"+searchArray);
-=======
-=======
-				
-				
->>>>>>> bdd44e3eee8c47ee423119ec0886838f72a9521b
+				/*
 				console.log(searchArray);
 				console.log(singleCharacteristic);
 				console.log(genres);
 				console.log(ratings);
 				console.log(highLow);
-<<<<<<< HEAD
->>>>>>> 753904adf0f0748ed5358d2f28e75f5ec6e11d83
-				//Hit JSON Data with searchArray and characteristic!
-
-				/*
-				$.getJSON("data.json", function(data){
+				*/
 				
+				retrieveData();
+
+			});
 
 
-				});
-*/
+			//retrieveData();
 
-<<<<<<< HEAD
-				var searchArray = [];
+			
+			//CODE FOR CHANING NUMBER OF MOVIES TO VIEW
+			
+			$("#numMovies").change(function(){
+				//console.log($(this).find('option:selected').val());]
+				numMovies = $(this).find('option:selected').val();
+				console.log(numMovies);
+				rects = [];
+				for(var j = 0; j < numMovies; j++){
+					rects.push({});
+				}
 
-				multSelectors.forEach( function(select){
-					//console.log(select.id);
-					if(select.id == "forties"){
-						searchArray.push(1940);
-					} else if (select.id == "fifties"){
-						searchArray.push(1950)
-					} else if (select.id == "sixties"){
-						searchArray.push(1960)
-					} else if (select.id == "seventies"){
-						searchArray.push(1970)
-					} else if (select.id == "eighties"){
-						searchArray.push(1980)
-					} else if (select.id == "ninties"){
-						searchArray.push(1990)
-					} else if (select.id == "twos"){
-						searchArray.push(2000)
-					} else {
-						searchArray.push(select.id);
-					}
-				});
-
-=======
->>>>>>> 753904adf0f0748ed5358d2f28e75f5ec6e11d83
-				//console.log(searchArray);
-=======
+				retrieveData();
 				
+				rect = svg.selectAll(".rect")
+			    	.data(rectGrid(rects));
 
->>>>>>> bdd44e3eee8c47ee423119ec0886838f72a9521b
-				//Hit JSON Data with searchArray and characteristic!
-				$.getJSON("data.json", function(data){
-					// global variable (from sorting.js) to store all movies.
-					movies = data;
-					var relevant;
+			  	rect.enter().append("rect")
+				    .attr("class", "rect")
+				    .attr("width", rectGrid.nodeSize()[0])
+				    .attr("height", rectGrid.nodeSize()[1])
+				    //.attr("fill", "url(#387253026)")
+				    .attr("transform", function(d) { return "translate(" + (d.x + 0)+ "," + d.y + ")"; })
+				    .style("opacity", 1e-6);
 
-					if(searchArray.length > 0 && singleCharacteristic != "" && (highLow == 0 || highLow == 1)){
-						relevant = get_data(searchArray, genres, ratings, singleCharacteristic, highLow);
-					}
-
-					console.log("data?");
-					console.log(relevant);
-					
-					// DO ALL D3 STUFF HERE
-				});
-
+				  rect.transition()
+				    .attr("width", rectGrid.nodeSize()[0])
+				    .attr("height", rectGrid.nodeSize()[1])
+				    .attr("transform", function(d) { return "translate(" + (d.x + 0)+ "," + d.y + ")"; })
+				    .style("opacity", 1);
+				  rect.exit().transition()
+				    .style("opacity", 1e-6)
+				    .remove();
+				    
 
 			});
 

@@ -57,6 +57,8 @@ function get_data (years, genres, ratings, variable, order) {
 		}
 	});
 	// sort the movies we are using based on variable
+	quickSort(used, order, variable);
+	console.log(used);
 	return {"data": used, "unused": unused};
 }
 
@@ -68,25 +70,25 @@ function swap(items, firstIndex, secondIndex){
     items[secondIndex] = temp;
 }
 
-function partition(order, items, left, right) {
+function partition(order, items, left, right, variable) {
 
-    var pivot = items[left]["Worldwide"];
+    var pivot = items[left][variable];
 
     while (left <= right) {
 
         //while (comparator(items[i], pivot)) {
         if (order == Order.low) {
-	        while (items[left]["Worldwide"] < pivot) {
+	        while (items[left][variable] < pivot) {
 	            left++;
 	        }
-	        while (items[right]['Worldwide'] > pivot) {
+	        while (items[right][variable] > pivot) {
 	            right--;
 	        }
 	    } else if (order == Order.high) {
-	    	while (items[left]["Worldwide"] > pivot) {
+	    	while (items[left][variable] > pivot) {
 	            left++;
 	        }
-	        while (items[right]['Worldwide'] < pivot) {
+	        while (items[right][variable] < pivot) {
 	            right--;
 	        }
 	    }
@@ -101,13 +103,13 @@ function partition(order, items, left, right) {
     return left;
 }
 
-function recursiveQuickSort(items, left, right, order) {
+function recursiveQuickSort(items, left, right, order, variable) {
 
     var index;
 
     if (items.length > 1) {
 
-        index = partition(order, items, left, right);
+        index = partition(order, items, left, right, variable);
 
         if (left < index - 1) {
             recursiveQuickSort(items, left, index - 1, order);
@@ -122,6 +124,6 @@ function recursiveQuickSort(items, left, right, order) {
     return items;
 }
 
-function quickSort(arr, order) {
-	return recursiveQuickSort(arr, 0, arr.length - 1, order);
+function quickSort(arr, order, variable) {
+	return recursiveQuickSort(arr, 0, arr.length - 1, order, variable);
 }
