@@ -14,6 +14,22 @@
 			form {
 				float : left;
 			}
+
+			#grid {
+				position: relative;
+				margin-top: 350px;
+			}
+
+			#info{
+				position: relative;
+				margin-left: 610px;
+				margin-top: -450px;
+
+
+			}
+
+
+
 		</style>
 
 		<!--New imports for d3 grids-->
@@ -22,7 +38,7 @@
 	</head>
 	<body>
 		<form action="">
-			Decades:<br/>
+			Year:<br/>
 			<!--2007-2013-->
 			<input id="seven" type="checkbox" name="year" value="2007">2007<br/>
 			<input id="eight" type="checkbox" name="year" value="2008">2008<br/>
@@ -111,6 +127,7 @@ genres = ['Musical & Performing Arts','Special Interest',
 		</select>
 
 		<div id="grid"></div>
+		<div id="info"></div>
 
 		<script type="text/javascript">
 			var movies = [];
@@ -138,14 +155,15 @@ genres = ['Musical & Performing Arts','Special Interest',
   			var posters = new Array();
  			var posterImages;
   			var postersID = [];
+  			var relevant;
 
 			//CODE FROM NESTED
 			var points = [];
 			var rects = [];
 
-			for(var i = 0; i < rects.length; i++){
-				rects.pop();
-			}
+			// for(var i = 0; i < rects.length; i++){
+			// 	rects.pop();
+			// }
 
 			for(var j = 0; j < numMovies; j++){
 				rects.push({});
@@ -168,13 +186,18 @@ genres = ['Musical & Performing Arts','Special Interest',
 			.append("g")
 			  .attr("transform", "translate(70,70)");
 
+			var svg2 = d3.select("#info").append("svg")
+			  .attr({
+			    width: 500,
+			    height: 200
+			  });
+
 			  var rect = svg.selectAll(".rect")
 			    .data(rectGrid(rects));
 			  rect.enter().append("rect")
 			    .attr("class", "rect")
 			    .attr("width", rectGrid.nodeSize()[0])
 			    .attr("height", rectGrid.nodeSize()[1])
-			    //.attr("fill", "url(#387253026)")
 			    .attr("transform", function(d) { return "translate(" + (d.x + 0)+ "," + d.y + ")"; })
 			    .style("opacity", 1e-6);
 
@@ -193,13 +216,11 @@ genres = ['Musical & Performing Arts','Special Interest',
 				$.getJSON("data.json", function(data){
 				// global variable (from sorting.js) to store all movies.
 				movies = data;
-				var relevant;
 
 				//console.log(searchArray);
 				//console.log(singleCharacteristic);
 				//console.log(highLow);
 				if(searchArray.length > 0 && singleCharacteristic != "" && (highLow == 0 || highLow == 1)){
-					//console.log("in here");
 					relevant = get_data(searchArray, genres, ratings, singleCharacteristic, highLow);
 				}
 
@@ -210,21 +231,14 @@ genres = ['Musical & Performing Arts','Special Interest',
 				
 				// DO ALL D3 STUFF HERE
 				if(relevant){
-					var sort_array = [];
-
-					var displayMovies = numMovies;
-					var count = 0;
 					//console.log("Number of movies: " + numMovies);
 
 					posters = [];
 					postersID = [];
 
 					$.each(relevant.data, function(i) {
-					  //if(count < numMovies){
-				          posters.push(relevant.data[i].Images["thumbnail"]);
-				          postersID.push({id: relevant.data[i].id, posters:relevant.data[i].Images["thumbnail"]});
-				          //count++;
-				      //}
+				          posters.push(relevant.data[i].Images["detailed"]);
+				          postersID.push({id: relevant.data[i].id, posters:relevant.data[i].Images["detailed"]});
 			        });
 
 				    //console.log(posters);
@@ -269,14 +283,17 @@ genres = ['Musical & Performing Arts','Special Interest',
 			        var counter = 0;
 
 			        $("pattern").each(function(index){
-			          var useID = $(this).attr("id");
-			          useID = "url(#" + useID + ")";
-			          var rec = $("rect")[counter];
-			          rec.setAttribute('fill', useID);
-			          counter++;
+				          if(counter < numMovies){
+					          var useID = $(this).attr("id");
+					          useID = "url(#" + useID + ")";
+					          var rec = $("rect")[counter];
+					          rec.setAttribute('fill', useID);
+					          rec.setAttribute('id', $(this).attr("id"));
+					          counter++;
+					      }
 			        });
 					          
-				    $("#grid").append(posterImages);
+				    // $("#grid").append(posterImages);
 				}
 
 			});
@@ -294,6 +311,7 @@ genres = ['Musical & Performing Arts','Special Interest',
 				searchArray = [];
 				genres = [];
 				ratings = [];
+				console.log("checked"+checked[0]);
 
 				checked[0].forEach(function(check){
 
@@ -414,7 +432,7 @@ genres = ['Musical & Performing Arts','Special Interest',
 					rects.push({});
 				}
 
-				retrieveData();
+				//retrieveData();
 				
 				rect = svg.selectAll(".rect")
 			    	.data(rectGrid(rects));
@@ -437,6 +455,31 @@ genres = ['Musical & Performing Arts','Special Interest',
 				    .remove();
 				    
 
+			});
+
+			//CODE FOR HOVER
+			d3.selectAll("rect").on("mouseover", function(){
+				if(relevant){
+					var currentID = $(this).attr("id");
+					//console.log("Current ID: " + currentID);
+					var currentMovie;
+					svg2.selectAll("text").remove();
+
+					$.each(relevant.data, function(i){
+						if(relevant.data[i].id == currentID){
+							console.log("FOUND A MATCH!");
+							console.log(relevant.data[i]);
+							currentMovie = relevant.data[i];
+							return false;
+						}
+					})
+
+					//console.log(currentMovie);
+
+					
+					svg2.append("text").text(""+currentMovie["Film"]).attr("x", 50).attr("y", 50);
+					svg2.append("text").text(singleCharacteristic + ": "+currentMovie[singleCharacteristic]).attr("x", 50).attr("y", 150);
+				}
 			});
 
 
