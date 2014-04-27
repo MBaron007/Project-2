@@ -5,6 +5,44 @@
 		<meta name="author" content="gyurisc">
 		<link rel="stylesheet" type="text/css" href="assets/css/jquery.gridster.css">
 		<link rel="stylesheet" type="text/css" href="assets/css/styles.css">
+		<title>Rotten Tomatoes Movies</title>
+		<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+		<script src="../sorting.js"></script>
+		<link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
+	    <script src="//code.jquery.com/jquery-1.9.1.js"></script>
+	    <script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+		<style type="text/css">
+			svg {
+				border: solid black 1px;
+			}
+
+			form {
+				float : left;
+			}
+
+			#grid {
+				/*position: relative;
+				margin-left: 500px;
+				margin-top: -250px;*/
+
+
+			}
+
+			#info{
+				/*position: relative;
+				margin-left: 0px;
+				margin-top: -450px;*/
+
+
+			}
+
+
+
+		</style>
+
+		<!--New imports for d3 grids-->
+		<script src="../d3-grid.js"></script>
+		
 	</head>
 	<body>
 		<section class="demo">
@@ -32,6 +70,94 @@
 				</ul>
 			</div>
 		</section>
+		<!--Start HTML from me-->
+		<form action="">
+			Year:<br/>
+			<input id="seven" type="checkbox" name="year" value="2007">2007<br/>
+			<input id="eight" type="checkbox" name="year" value="2008">2008<br/>
+			<input id="nine" type="checkbox" name="year" value="2009">2009<br/>
+			<input id="ten" type="checkbox" name="year" value="2010">2010<br/> 
+			<input id="eleven" type="checkbox" name="year" value="80s">2011<br/>
+			<input id="twelve" type="checkbox" name="year" value="90s">2012<br/>
+			<input id="thirteen" type="checkbox" name="year" value="2ks">2013<br/>
+		</form>
+
+
+
+		<form action="">
+			<!--Change values? Necessary?-->
+			Genres:<br/>
+			<input id="action" type="checkbox" name="genre" value="action">Action & Adventure<br/> 
+			<input id="animation" type="checkbox" name="genre" value="animation">Animation<br/>
+			<input id="arthouse" type="checkbox" name="genre" value="comedy">Art House & International<br/>
+			<input id="classics" type="checkbox" name="genre" value="comedy">Classics<br/>
+			<input id="comedy" type="checkbox" name="genre" value="comedy">Comedy<br/>
+			<input id="documentary" type="checkbox" name="genre" value="romantic">Documentary<br/>
+			<input id="drama" type="checkbox" name="genre" value="comedy">Drama<br/>
+			<input id="horror" type="checkbox" name="genre" value="horror">Horror<br/>
+			<input id="kids" type="checkbox" name="genre" value="kids">Kids & Family<br/>
+			<input id="musical" type="checkbox" name="genre" value="horror">Musical & Performing Arts<br/>
+			<input id="mystery" type="checkbox" name="genre" value="comedy">Mystery & Suspense<br/>
+			<input id="romance" type="checkbox" name="genre" value="romantic">Romance<br/>
+			<input id="scifi" type="checkbox" name="genre" value="romantic">Science Fiction & Fantasy<br/>
+			<input id="special" type="checkbox" name="genre" value="horror">Special Interests<br/>
+			<input id="sports" type="checkbox" name="genre" value="horror">Sports & Fitness<br/>
+			<input id="tv" type="checkbox" name="genre" value="horror">Television<br/>
+			<input id="western" type="checkbox" name="genre" value="horror">Western<br/>
+		</form>
+
+		<form action="">
+			Rating:<br/>
+			<input id="G" type="checkbox" name="year" value="2007">G<br/>
+			<input id="PG" type="checkbox" name="year" value="2008">PG<br/>
+			<input id="PG-13" type="checkbox" name="year" value="2009">PG-13<br/>
+			<input id="R" type="checkbox" name="year" value="2010">R<br/> 
+			<input id="NC-17" type="checkbox" name="year" value="80s">NC-17<br/>
+			
+		</form>
+
+
+		<form action="">
+			Criteria:<br/>
+			<input id="openingweekendtheaters" type="radio" name="char" value="rating">Number of Theaters In Opening Weekend<br/>
+			<input id="worldwide" type="radio" name="char" value="rating">Worldwide Gross Profit<br/>
+			<input id="openingweekend" type="radio" name="char" value="rating">Opening Weekend Revenue<br/>
+			<input id="audience" type="radio" name="char" value="rating">Audience Score<br/>
+			<input id="market" type="radio" name="char" value="rating">Market Profitability<br/>
+			<input id="boxofficeavg" type="radio" name="char" value="rating">Box Office Average Revenue Opening Weekend<br/>
+			<input id="budget" type="radio" name="char" value="rating">Budget<br/>
+			<input id="foreigngross" type="radio" name="char" value="rating">Foreign Gross Profit<br/>
+			<input id="critics" type="radio" name="char" value="rating">Critics Score<br/>
+			<input id="domesticgross" type="radio" name="char" value="rating">Domestic Gross Profit<br/>
+
+		</form>
+
+		<form action="">
+			Ordering:<br/>
+			<input id="one" type="radio" name="char" value="rating">Lowest<br/>
+			<input id="zero" type="radio" name="char" value="rating">Highest<br/>
+		</form>
+
+		<p>Number of Films to Display:</p>
+		<select id="numMovies">
+			<option value="1">1</option>
+			<option value="2">2</option>
+			<option value="3">3</option>
+			<option value="4">4</option>
+			<option value="5">5</option>
+			<option value="6">6</option>
+			<option value="7">7</option>
+			<option value="8">8</option>
+			<option value="9" selected="selected">9</option>
+			<option value="10">10</option>
+			<option value="11">11</option>
+			<option value="12">12</option>
+		</select>
+
+		<div id="grid"></div>
+		<div id="info"></div>
+
+		<!--End html from me-->
 		<script type="text/javascript" src="assets/jquery.js"></script>
 		<script type="text/javascript" src="assets/jquery.gridster.js" charster="utf-8"></script>
 		<script type="text/javascript">
@@ -44,6 +170,188 @@
 					min_cols: 1
 				}).data('gridster');
 			});
+
+			//MY STUFF
+
+			var movies = [];
+
+			//User preferences 
+			var multSelectors = [];
+			var singleCharacteristic;
+			var searchArray = [];
+			var genres = [];
+			var ratings = [];
+			var highLow;
+			var numMovies = 9;
+
+			//movie data holders
+			var moviesID = new Array();
+  			var posters = new Array();
+ 			var posterImages;
+  			var postersID = [];
+  			var relevant;
+
+  						//function for getting data
+			//Hit JSON Data with searchArray and characteristic!
+			function retrieveData() {
+				$.getJSON("../data.json", function(data){
+				// global variable (from sorting.js) to store all movies.
+				movies = data;
+
+				//console.log(searchArray);
+				//console.log(singleCharacteristic);
+				//console.log(highLow);
+				if(searchArray.length > 0 && singleCharacteristic != "" && (highLow == 0 || highLow == 1)){
+					relevant = get_data(searchArray, genres, ratings, singleCharacteristic, highLow);
+				}
+
+				//console.log("data?");
+				console.log("Info:");
+				console.log(singleCharacteristic);
+				console.log(relevant);
+				
+				// DO ALL D3 STUFF HERE
+				if(relevant){
+					//console.log("Number of movies: " + numMovies);
+
+					posters = [];
+					postersID = [];
+
+					$.each(relevant.data, function(i) {
+				          posters.push(relevant.data[i].Images["detailed"]);
+				          postersID.push({id: relevant.data[i].id, posters:relevant.data[i].Images["detailed"]});
+			        });
+
+				    console.log(posters);
+				    //console.log("done with movies");
+					console.log(postersID);
+
+					          
+				    // $("#grid").append(posterImages);
+				}
+
+			});
+
+			}
+
+			//Multiple selector possibilities 
+			d3.selectAll('input').on("click", function(){
+				var checked = d3.selectAll('input');
+				//console.log(checked[0]);
+				var counter = 0;
+
+				multSelectors = [];
+				singleCharacteristic = [];
+				searchArray = [];
+				genres = [];
+				ratings = [];
+				console.log("checked"+checked[0]);
+
+				checked[0].forEach(function(check){
+
+					//FIX THIS
+					if(d3.select("#"+check.id).property('checked') == true){
+						if(check.id == "openingweekendtheaters"){
+							singleCharacteristic = "Number_of_Theatres_in_Opening_Weekend";
+						} else if(check.id == "worldwide"){
+							singleCharacteristic = "Worldwide";
+						} else if(check.id == "openingweekend"){
+							singleCharacteristic = "Opening_Weekend";
+						} else if(check.id == "audience"){
+							singleCharacteristic = "Audience_Score";
+						} else if(check.id == "market"){
+							singleCharacteristic = "Market_Profitability";
+						} else if(check.id == "boxofficeavg"){
+							singleCharacteristic = "Box_Office_Avg_Opening_Wknd";
+						} else if(check.id == "budget"){
+							singleCharacteristic = "Budget";
+						} else if(check.id == "foreigngross"){
+							singleCharacteristic = "Foreign_Gross";
+						} else if(check.id == "critics"){
+							singleCharacteristic = "Critics_Score";
+						} else if(check.id == "domesticgross"){
+							singleCharacteristic = "Domestic_Gross";
+						} else if(check.id == "zero"){
+							highLow = Order.high;
+						} else if(check.id == "one"){
+							highLow = Order.low;
+						}else {
+							multSelectors.push(check);
+						};
+					};
+				});
+
+
+
+				multSelectors.forEach( function(select){
+					//console.log(select.id);
+
+					if(select.id == "seven"){
+						searchArray.push(2007);
+					} else if (select.id == "eight"){
+						searchArray.push(2008);
+					} else if (select.id == "nine"){
+						searchArray.push(2009);
+					} else if (select.id == "ten"){
+						searchArray.push(2010);
+					} else if (select.id == "eleven"){
+						searchArray.push(2011);
+					} else if (select.id == "twelve"){
+						searchArray.push(2012);
+					} else if (select.id == "thirteen"){
+						searchArray.push(2013);
+					} else if (select.id == "action"){
+						genres.push("Action & Adventure");
+					} else if (select.id == "animation"){
+						genres.push("Animation");
+					} else if (select.id == "arthouse"){
+						genres.push("Art House & International");
+					} else if (select.id == "classics"){
+						genres.push("Classics");
+					} else if (select.id == "comedy"){
+						genres.push("Comedy");
+					} else if (select.id == "documentary"){
+						genres.push("Documentary");
+					} else if (select.id == "drama"){
+						genres.push("Drama");
+					} else if (select.id == "horror"){
+						genres.push("Horror");
+					} else if (select.id == "kids"){
+						genres.push("Kids & Family");
+					} else if (select.id == "musical"){
+						genres.push("Musical & Performing Arts");
+					} else if (select.id == "mystery"){
+						genres.push("Mystery & Suspense");
+					} else if (select.id == "romance"){
+						genres.push("Romance");
+					} else if (select.id == "scifi"){
+						genres.push("Science Fiction & Fantasy");
+					} else if (select.id == "special"){
+						genres.push("Special Interests");
+					} else if (select.id == "sports"){
+						genres.push("Sports & Fitness")
+					} else if (select.id == "tv"){
+						genres.push("Television");
+					} else if (select.id == "western"){
+						genres.push("Western");
+					} else {
+						ratings.push(select.id);
+					}
+				});
+
+				/*
+				console.log(searchArray);
+				console.log(singleCharacteristic);
+				console.log(genres);
+				console.log(ratings);
+				console.log(highLow);
+				*/
+				
+				retrieveData();
+
+			});
+
+
 		</script>
 	</body>
 </html>
