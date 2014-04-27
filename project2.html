@@ -16,14 +16,17 @@
 			}
 
 			#grid {
-				position: relative;
-				margin-top: 350px;
+				/*position: relative;
+				margin-left: 500px;
+				margin-top: -250px;*/
+
+
 			}
 
 			#info{
-				position: relative;
-				margin-left: 610px;
-				margin-top: -450px;
+				/*position: relative;
+				margin-left: 0px;
+				margin-top: -450px;*/
 
 
 			}
@@ -169,13 +172,13 @@ genres = ['Musical & Performing Arts','Special Interest',
 				rects.push({});
 			}
 
-			var width = 600,
-			    height = 600;
+			var width = 500,
+			    height = 500;
 
 
 			var rectGrid = d3.layout.grid()
 			  .bands()
-			  .size([450, 450])
+			  .size([300, 300])
 			  .padding([0.05, 0.05]);
 
 			var svg = d3.select("#grid").append("svg")
@@ -432,7 +435,7 @@ genres = ['Musical & Performing Arts','Special Interest',
 					rects.push({});
 				}
 
-				//retrieveData();
+				retrieveData();
 				
 				rect = svg.selectAll(".rect")
 			    	.data(rectGrid(rects));
@@ -453,34 +456,39 @@ genres = ['Musical & Performing Arts','Special Interest',
 				  rect.exit().transition()
 				    .style("opacity", 1e-6)
 				    .remove();
+
+				    changeMovieNum();
 				    
 
 			});
 
 			//CODE FOR HOVER
-			d3.selectAll("rect").on("mouseover", function(){
-				if(relevant){
-					var currentID = $(this).attr("id");
-					//console.log("Current ID: " + currentID);
-					var currentMovie;
-					svg2.selectAll("text").remove();
+			function changeMovieNum(){
+				d3.selectAll("rect").on("mouseover", function(){
+					if(relevant){
+						var currentID = $(this).attr("id");
+						//console.log("Current ID: " + currentID);
+						var currentMovie;
+						svg2.selectAll("text").remove();
 
-					$.each(relevant.data, function(i){
-						if(relevant.data[i].id == currentID){
-							console.log("FOUND A MATCH!");
-							console.log(relevant.data[i]);
-							currentMovie = relevant.data[i];
-							return false;
-						}
-					})
+						$.each(relevant.data, function(i){
+							if(relevant.data[i].id == currentID){
+								console.log("FOUND A MATCH!");
+								console.log(relevant.data[i]);
+								currentMovie = relevant.data[i];
+								return false;
+							}
+						})
 
-					//console.log(currentMovie);
 
-					
-					svg2.append("text").text(""+currentMovie["Film"]).attr("x", 50).attr("y", 50);
-					svg2.append("text").text(singleCharacteristic + ": "+currentMovie[singleCharacteristic]).attr("x", 50).attr("y", 150);
-				}
-			});
+						
+						svg2.append("text").text(""+currentMovie["Film"]).attr("x", 50).attr("y", 50);
+						svg2.append("text").text(singleCharacteristic + ": "+currentMovie[singleCharacteristic]).attr("x", 50).attr("y", 150);
+					}
+				});
+			}
+
+			changeMovieNum();
 
 
 		</script>
