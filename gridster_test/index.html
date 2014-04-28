@@ -67,7 +67,7 @@
 				padding: 0px 15px;
 			    margin: auto;
 			    float:left;
-			    width:100px;
+			    width:106px;
 			    overflow:visible;
 			    height:50px;
 			}
@@ -92,7 +92,7 @@
 
 			.file_menu {
 			    display:none;
-			    width:100px;
+			    width:106px;
 			    border: 1px solid #1c1c1c;
 			    padding:0px;
 			    margin:0px;
@@ -101,7 +101,7 @@
 			.file_menu li {
 			    background-color: #ECECEC;
 			    margin:0; 
-			    padding:0; 
+			    padding:3px; 
 			    list-style:none;
 			    color:#000;
 			    border-bottom:1px solid #DCDCDC;
@@ -125,29 +125,37 @@
 			}
 
 			#select_years {
-				width: 80px;
+				width: 86px;
 				text-align:center;
 				padding:10px;
 			}
 
-			.genres, .genres li, .criteria, .criteria li {
+			.genres, .criteria {
+				width:186px!important;
+			}
+
+			.criteria li {
+				width:180px!important;
+			}
+
+			.genres li {
 				width:180px!important;
 			}
 
 			#select_genres {
-				width: 160px!important;
+				width: 166px!important;
 				text-align:center;
 				padding:10px;
 			}
 
 			#select_ratings {
-				width: 80px;
+				width: 86px;
 				text-align:center;
 				padding:10px;
 			}
 
 			#select_sort {
-				width: 80px!important;
+				width: 86px!important;
 				text-align:center;
 				padding:10px;
 			}
@@ -167,10 +175,14 @@
 			}
 
 			.button_div {
-				background-color: #446160;
+				background-color: rgb(200, 209, 209);
 				color: #FFF;
 				font-size: 15px;
 				font-weight: bold;
+			}
+
+			input {
+				display:none;
 			}
 
 		</style>
@@ -197,7 +209,7 @@
 			       <li class="hoverli">
 						<div id="select_years" width="184" height="32" class="menu_class button_div" />Years</div>
 				        <ul class="file_menu">
-					        <li id=""><input id="seven" type="" name="year" value="2007">2007<br/></li>
+					        <li><input id="seven" type="checkbox" name="year" value="2007">2007<br/></li>
 							<li><input id="eight" type="checkbox" name="year" value="2008">2008<br/></li>
 							<li><input id="nine" type="checkbox" name="year" value="2009">2009<br/></li>
 							<li><input id="ten" type="checkbox" name="year" value="2010">2010<br/></li>
@@ -275,7 +287,7 @@
 			    <ul class="hover">
 			       <li class="hoverli">
 						<div id="select_sort" width="184" height="32" class="menu_class button_div" />Sort By</div>
-				        <ul class="file_menu">
+				        <ul class="file_menu order">
 					        <li><input id="one" type="radio" name="char" value="rating">Lowest<br/></li>
 							<li><input id="zero" type="radio" name="char" value="rating">Highest<br/></li>
 				        </ul>
@@ -360,9 +372,6 @@
 
 					gridster = $(".gridster ul").gridster().data('gridster');
 
-					console.log("here is rel");
-					console.log(relevant);
-
 					$.each(relevant.data, function(i){
 						var myRow = possRow[Math.floor(Math.random() * possRow.length)];
 						var myCol = possCol[Math.floor(Math.random() * possCol.length)];
@@ -379,24 +388,19 @@
 				movies = data;
 
 				if(years.length > 0 && singleCharacteristic != "" && (highLow == 0 || highLow == 1)){
-					console.log("CALL:");
+					/* console.log("CALL:");
 					console.log(years);
 					console.log(genres);
 					console.log(ratings);
+					console.log(singleCharacteristic);
+					console.log(highLow); */
 					relevant = get_data(years, genres, ratings, singleCharacteristic, highLow);
 				} else {
 					relevant = {'data' : [], 'unused' : []};
 				}
-
-				//console.log("data?");
-				console.log("Info:");
-				console.log(singleCharacteristic);
-				console.log(relevant);
 				
 				// DO ALL D3 STUFF HERE
 				if(relevant != undefined){
-					//console.log("Number of movies: " + numMovies);
-
 					posters = [];
 					postersID = [];
 
@@ -413,10 +417,35 @@
 
 
 			//Multiple selector possibilities 
-			d3.selectAll('input').on("click", function(val){
-				console.log("click!!!");
+			d3.selectAll('.file_menu li').on("click", function(val){
+				var checkbox = $(this).children().first();
+				var parent = $(this).parent();
+				if (parent.hasClass("criteria") || parent.hasClass("order")) { // criteria or order
+					var siblings = $(this).siblings();
+					if (parent.hasClass("criteria")) {
+						siblings.css("background-color","#ECECEC");
+					} else {
+						siblings.css("background-color","#ECECEC");
+					}
+					$(this).unbind('mouseover mouseout');
+					siblings.mouseover(function() { $(this).css("background-color","#79D3CF"); });
+					siblings.mouseout(function() { $(this).css("background-color","#ECECEC"); });
+					checkbox.prop('checked', true);
+					$(this).css('background-color','rgb(90, 176, 178)');
+				} else {
+					if (checkbox.prop('checked') == false) {
+						checkbox.prop('checked', true);
+						$(this).unbind('mouseover mouseout');
+						$(this).css('background-color','rgb(90, 176, 178)');
+					} else {
+						checkbox.prop('checked', false);
+						$(this).css('background-color','#ECECEC');
+						$(this).mouseover(function() { $(this).css("background-color","#79D3CF"); });
+						$(this).mouseout(function() { $(this).css("background-color","#ECECEC"); });
+					}
+				}
+
 				var checked = d3.selectAll('input');
-				//console.log(checked[0]);
 				var counter = 0;
 
 
@@ -431,30 +460,42 @@
 					//FIX THIS
 					if(d3.select("#"+check.id).property('checked') == true){
 						if(check.id == "openingweekendtheaters"){
+							$("#select_criteria").css("background-color","rgb(0, 42, 51)");
 							singleCharacteristic = "Number_of_Theatres_in_Opening_Weekend";
 						} else if(check.id == "worldwide"){
+							$("#select_criteria").css("background-color","rgb(0, 42, 51)");
 							singleCharacteristic = "Worldwide";
 						} else if(check.id == "openingweekend"){
+							$("#select_criteria").css("background-color","rgb(0, 42, 51)");
 							singleCharacteristic = "Opening_Weekend";
 						} else if(check.id == "audience"){
+							$("#select_criteria").css("background-color","rgb(0, 42, 51)");
 							singleCharacteristic = "Audience_Score";
 						} else if(check.id == "market"){
+							$("#select_criteria").css("background-color","rgb(0, 42, 51)");
 							singleCharacteristic = "Market_Profitability";
 						} else if(check.id == "boxofficeavg"){
+							$("#select_criteria").css("background-color","rgb(0, 42, 51)");
 							singleCharacteristic = "Box_Office_Avg_Opening_Wknd";
 						} else if(check.id == "budget"){
+							$("#select_criteria").css("background-color","rgb(0, 42, 51)");
 							singleCharacteristic = "Budget";
 						} else if(check.id == "foreigngross"){
+							$("#select_criteria").css("background-color","rgb(0, 42, 51)");
 							singleCharacteristic = "Foreign_Gross";
 						} else if(check.id == "critics"){
+							$("#select_criteria").css("background-color","rgb(0, 42, 51)");
 							singleCharacteristic = "Critics_Score";
 						} else if(check.id == "domesticgross"){
+							$("#select_criteria").css("background-color","rgb(0, 42, 51)");
 							singleCharacteristic = "Domestic_Gross";
 						} else if(check.id == "zero"){
+							$("#select_sort").css("background-color","#004756");
 							highLow = Order.high;
 						} else if(check.id == "one"){
+							$("#select_sort").css("background-color","#004756");
 							highLow = Order.low;
-						}else {
+						} else {
 							multSelectors.push(check);
 						};
 					};
@@ -463,7 +504,6 @@
 
 
 				multSelectors.forEach( function(select){
-					//console.log(select.id);
 
 					if(select.id == "seven"){
 						years.push(2007);
@@ -518,13 +558,23 @@
 					}
 				});
 
-				/*
-				console.log(years);
-				console.log(singleCharacteristic);
-				console.log(genres);
-				console.log(ratings);
-				console.log(highLow);
-				*/
+				if (years.length == 0) {
+					$("#select_years").css("background-color","rgb(200, 209, 209)");
+				} else {
+					$("#select_years").css("background-color","#004756");
+				}
+
+				if (genres.length == 0) {
+					$("#select_genres").css("background-color","rgb(200, 209, 209)");
+				} else {
+					$("#select_genres").css("background-color","#004756");
+				}
+
+				if (ratings.length == 0) {
+					$("#select_ratings").css("background-color","rgb(200, 209, 209)");
+				} else {
+					$("#select_ratings").css("background-color","#004756");
+				}
 				
 				retrieveData();
 
