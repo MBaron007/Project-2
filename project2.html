@@ -214,7 +214,7 @@ genres = ['Musical & Performing Arts','Special Interest',
 			    .remove();
 
 			//function for getting data
-						//Hit JSON Data with searchArray and characteristic!
+			//Hit JSON Data with searchArray and characteristic!
 			function retrieveData() {
 				$.getJSON("data.json", function(data){
 				// global variable (from sorting.js) to store all movies.
@@ -244,9 +244,9 @@ genres = ['Musical & Performing Arts','Special Interest',
 				          postersID.push({id: relevant.data[i].id, posters:relevant.data[i].Images["detailed"]});
 			        });
 
-				    //console.log(posters);
+				    console.log(posters);
 				    //console.log("done with movies");
-					//console.log(postersID);
+					console.log(postersID);
 
 					/*
 					postersID.forEach(function(movie){
@@ -277,7 +277,7 @@ genres = ['Musical & Performing Arts','Special Interest',
 			            .attr("width", 20)
 			            .attr("height", 20)
 			              .append("image")
-			              .attr("xlink:href", post.posters)
+			              .attr("xlink:href", "posters/"+post.id+"/full.jpg")
 			              .attr("width", 100)
 			              .attr("height", 100);
 			        });

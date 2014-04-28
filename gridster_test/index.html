@@ -159,6 +159,7 @@
 		<script type="text/javascript" src="assets/jquery.gridster.js" charster="utf-8"></script>
 		<script type="text/javascript">
 			var gridster;
+			var checkTime = 0;
 
 			$(function() {
 				$(".gridster > ul").gridster({
@@ -169,12 +170,17 @@
 
 			$(function() {
 				gridster = $(".gridster ul").gridster().data('gridster');
-				gridster.serialize();
+				console.log(gridster.serialize());
+				//gridster.add_widget('<li class="new">The HTML of the widget...</li>', 2, 1);
+				//gridster.add_widget('<li class="new">The HTML of the widget...</li>', 2, 1);
 				
 
 
 			})
 
+			function removeWidget() {
+				gridster.remove_widget( $(".gridster ul"));
+			}
 			//////////////////////// 
 			//MY STUFF//////////////
 			////////////////////////
@@ -205,21 +211,36 @@
 				//var possXYSize = [[1,1], [2,1], [1,2], [2,2]];
 				//how many rows do we need = length of relevant divided by 4
 
-				console.log(relevant);
+				
 				
 				
 				//var possLoc = {}
 				//console.log("byuasid");
+				console.log("check whats relevant");
+				console.log(relevant);
 				if(relevant){
 					console.log("in here");
 					//3.select("#gridsta").html("");
-					var grids = gridster.serialize();
-					var numRemove = grid.length;
 
-					for (var i =0; i < numRemove; i++){
-						gridster.remove_widget($('.gridster li').eq(i));
+					if(checkTime == 0){
+						checkTime++;
+						console.log("CHECK TIME: " + checkTime);
+					} else{
+						if(relevant.data.length > 0){
+							//removeWidget();
+						}
+						//checkTime = 0;
+						console.log("CHECK TIME: " + checkTime);
 					}
+					$.each($(".gridster li"), function(index, obj){
+					    if($(this).attr("id")!="settings"){
+					      self.gridster.remove_widget(obj);
+					    }
+					});
 
+
+					console.log("here is rel");
+					console.log(relevant);
 					$.each(relevant.data, function(i){
 						var myRow = possRow[Math.floor(Math.random() * possRow.length)];
 						var myCol = possCol[Math.floor(Math.random() * possCol.length)];
@@ -235,7 +256,7 @@
 						// 		.attr("width", "100%")
 						// 		.attr("height", "100%")
 						// 		.attr("src", "../posters/"+relevant.data[i].id+"/full.jpg");
-						gridster.add_widget('<li class="new"><img width="100%" height="100%" src="../posters/'+relevant.data[i].id+'/full.jpg"/></li>', myRow, myCol);
+						gridster.add_widget('<li class="new"><img width="100%" height="100%" src="../posters/'+relevant.data[i].id+'/full.jpg"/></li>', myCol, myRow);
 					});
 				}
 			}
@@ -252,6 +273,8 @@
 				//console.log(highLow);
 				if(searchArray.length > 0 && singleCharacteristic != "" && (highLow == 0 || highLow == 1)){
 					relevant = get_data(searchArray, genres, ratings, singleCharacteristic, highLow);
+					console.log("relevant ");
+					console.log(relevant);
 				}
 
 				//console.log("data?");
@@ -277,8 +300,8 @@
 
 					          
 				    // $("#grid").append(posterImages);
+				    renderData();
 				}
-				renderData();
 			});
 
 			}
@@ -290,12 +313,18 @@
 				//console.log(checked[0]);
 				var counter = 0;
 
+
 				multSelectors = [];
 				singleCharacteristic = [];
 				searchArray = [];
 				genres = [];
 				ratings = [];
 				//console.log("checked"+checked[0]);
+
+				//if we add category to array
+					//counterArray++
+				//if we remove category from array
+
 
 				checked[0].forEach(function(check){
 
@@ -398,7 +427,6 @@
 				*/
 				
 				retrieveData();
-				renderData();
 
 			});
 

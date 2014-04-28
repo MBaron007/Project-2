@@ -47,14 +47,18 @@ var Order = {
 function get_data (years, genres, ratings, variable, order) {
 	used = new Array();
 	unused = new Array();
+	var charMax = 0;
 	movies.forEach(function(movie) {
+		//new code to test maxes
+
 		// figure out which movies to use
 		if (contains(years,movie.Year) && contains(genres,movie.Genres) && 
 			contains(ratings,movie.Rating)) {
 			if (movie[variable] == null) 
 				unused.push(movie);
-			else 
+			else {
 				used.push(movie);
+			}
 		}
 	});
 	// sort the movies we are using based on variable
