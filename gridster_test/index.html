@@ -45,6 +45,7 @@
 		
 	</head>
 	<body>
+		<div id="ahart">
 		<section class="demo">
 			<div class="gridster">
 				<ul id="gridsta">
@@ -67,8 +68,9 @@
 				</ul>
 			</div>
 		</section>
+	</div>
 		<!--Start HTML from me-->
-		<form action="">
+		<form action="" id="firstForm">
 			Year:<br/>
 			<input id="seven" type="checkbox" name="year" value="2007">2007<br/>
 			<input id="eight" type="checkbox" name="year" value="2008">2008<br/>
@@ -162,7 +164,7 @@
 			var checkTime = 0;
 
 			$(function() {
-				$(".gridster > ul").gridster({
+				$(".gridster ul").gridster({
 					widget_margins: [10, 10], 
 					widget_base_dimensions: [140, 140]
 				});
@@ -170,7 +172,7 @@
 
 			$(function() {
 				gridster = $(".gridster ul").gridster().data('gridster');
-				console.log(gridster.serialize());
+				//console.log(gridster.serialize());
 				//gridster.add_widget('<li class="new">The HTML of the widget...</li>', 2, 1);
 				//gridster.add_widget('<li class="new">The HTML of the widget...</li>', 2, 1);
 				
@@ -212,35 +214,54 @@
 				//how many rows do we need = length of relevant divided by 4
 
 				
-				
-				
 				//var possLoc = {}
 				//console.log("byuasid");
 				console.log("check whats relevant");
 				console.log(relevant);
-				if(relevant){
-					console.log("in here");
 					//3.select("#gridsta").html("");
 
-					if(checkTime == 0){
-						checkTime++;
-						console.log("CHECK TIME: " + checkTime);
-					} else{
-						if(relevant.data.length > 0){
-							//removeWidget();
-						}
-						//checkTime = 0;
-						console.log("CHECK TIME: " + checkTime);
-					}
-					$.each($(".gridster li"), function(index, obj){
-					    if($(this).attr("id")!="settings"){
-					      self.gridster.remove_widget(obj);
-					    }
+					// if(checkTime == 0){
+					// 	checkTime++;
+					// 	console.log("CHECK TIME: " + checkTime);
+					// } else{
+					// 	if(relevant.data.length > 0){
+					// 		//$(".gridster ul").remove();
+					// 		removeWidget();
+					// 	}
+					// 	//checkTime = 0;
+					// 	console.log("CHECK TIME: " + checkTime);
+					// }
+
+
+					// var obj = $(".gridster ul");
+					// console.log("logging obj:");
+					// console.log(obj);
+					// console.log("here");
+					// $(".gridster ul").gridster({
+				 //        widget_margins: [10, 10],
+				 //        widget_base_dimensions: [140, 140]
+				 //    });
+
+					$("#ahart").remove();
+					$("#firstForm").prepend("<div id='ahart'><section class='demo'><div class='gridster'><ul id='gridsta'></ul></div></section></div>");
+
+
+					$(".gridster ul").gridster({
+						widget_margins: [10, 10], 
+						widget_base_dimensions: [140, 140]
 					});
+
+					gridster = $(".gridster ul").gridster().data('gridster');
+					// $.each($(".gridster li"), function(index, obj){
+					//     if($(this).attr("id")!="settings"){
+					//       self.gridster.remove_widget(obj);
+					//     }
+					// });
 
 
 					console.log("here is rel");
 					console.log(relevant);
+
 					$.each(relevant.data, function(i){
 						var myRow = possRow[Math.floor(Math.random() * possRow.length)];
 						var myCol = possCol[Math.floor(Math.random() * possCol.length)];
@@ -258,7 +279,6 @@
 						// 		.attr("src", "../posters/"+relevant.data[i].id+"/full.jpg");
 						gridster.add_widget('<li class="new"><img width="100%" height="100%" src="../posters/'+relevant.data[i].id+'/full.jpg"/></li>', myCol, myRow);
 					});
-				}
 			}
 
   			//function for getting data
@@ -283,7 +303,7 @@
 				console.log(relevant);
 				
 				// DO ALL D3 STUFF HERE
-				if(relevant){
+				if(relevant != undefined && relevant.data != null && relevant.data != []){
 					//console.log("Number of movies: " + numMovies);
 
 					posters = [];
