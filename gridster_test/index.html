@@ -210,53 +210,20 @@
 
 				var possRow = [1,2,3,4];
 				var possCol = [1,2];
-				//var possXYSize = [[1,1], [2,1], [1,2], [2,2]];
-				//how many rows do we need = length of relevant divided by 4
 
-				
-				//var possLoc = {}
-				//console.log("byuasid");
-				console.log("check whats relevant");
-				console.log(relevant);
-					//3.select("#gridsta").html("");
-
-					// if(checkTime == 0){
-					// 	checkTime++;
-					// 	console.log("CHECK TIME: " + checkTime);
-					// } else{
-					// 	if(relevant.data.length > 0){
-					// 		//$(".gridster ul").remove();
-					// 		removeWidget();
-					// 	}
-					// 	//checkTime = 0;
-					// 	console.log("CHECK TIME: " + checkTime);
-					// }
-
-
-					// var obj = $(".gridster ul");
-					// console.log("logging obj:");
-					// console.log(obj);
-					// console.log("here");
-					// $(".gridster ul").gridster({
-				 //        widget_margins: [10, 10],
-				 //        widget_base_dimensions: [140, 140]
-				 //    });
-
+				if ($(".gridster li").length > 0) {
 					$("#ahart").remove();
 					$("#firstForm").prepend("<div id='ahart'><section class='demo'><div class='gridster'><ul id='gridsta'></ul></div></section></div>");
+				}
 
 
+				if (relevant.data != null && relevant.data != []) {
 					$(".gridster ul").gridster({
 						widget_margins: [10, 10], 
 						widget_base_dimensions: [140, 140]
 					});
 
 					gridster = $(".gridster ul").gridster().data('gridster');
-					// $.each($(".gridster li"), function(index, obj){
-					//     if($(this).attr("id")!="settings"){
-					//       self.gridster.remove_widget(obj);
-					//     }
-					// });
 
 
 					console.log("here is rel");
@@ -265,20 +232,9 @@
 					$.each(relevant.data, function(i){
 						var myRow = possRow[Math.floor(Math.random() * possRow.length)];
 						var myCol = possCol[Math.floor(Math.random() * possCol.length)];
-						//console.log("x: " + mySize[0] + " y: " + mySize[1]);
-						// d3.select("#gridsta")
-						// 	.append("li")
-						// 	.attr("data-row", "")
-						// 	.attr("data-col", "")
-						// 	.attr("data-sizex", mySize[0])
-						// 	.attr("data-sizey", mySize[1])
-						// 	.attr("class", "gs_w")
-						// 		.append("img")
-						// 		.attr("width", "100%")
-						// 		.attr("height", "100%")
-						// 		.attr("src", "../posters/"+relevant.data[i].id+"/full.jpg");
 						gridster.add_widget('<li class="new"><img width="100%" height="100%" src="../posters/'+relevant.data[i].id+'/full.jpg"/></li>', myCol, myRow);
 					});
+				}
 			}
 
   			//function for getting data
@@ -292,9 +248,13 @@
 				//console.log(singleCharacteristic);
 				//console.log(highLow);
 				if(searchArray.length > 0 && singleCharacteristic != "" && (highLow == 0 || highLow == 1)){
+					console.log("CALL:");
+					console.log(searchArray);
+					console.log(genres);
+					console.log(ratings);
 					relevant = get_data(searchArray, genres, ratings, singleCharacteristic, highLow);
-					console.log("relevant ");
-					console.log(relevant);
+				} else {
+					relevant = {'data' : [], 'unused' : []};
 				}
 
 				//console.log("data?");
@@ -303,7 +263,7 @@
 				console.log(relevant);
 				
 				// DO ALL D3 STUFF HERE
-				if(relevant != undefined && relevant.data != null && relevant.data != []){
+				if(relevant != undefined){
 					//console.log("Number of movies: " + numMovies);
 
 					posters = [];
@@ -314,12 +274,6 @@
 				          postersID.push({id: relevant.data[i].id, posters:relevant.data[i].Images["detailed"]});
 			        });
 
-				    console.log(posters);
-				    //console.log("done with movies");
-					console.log(postersID);
-
-					          
-				    // $("#grid").append(posterImages);
 				    renderData();
 				}
 			});
