@@ -47,25 +47,14 @@
 	<body>
 		<section class="demo">
 			<div class="gridster">
-				<ul>
-					<li data-row="1" data-col="1" data-sizex="1" data-sizey="1"><img width="130px" height="130px"src="pic1/full.jpg"/></li>
+				<ul id="gridsta">
+					<li data-row="1" data-col="1" data-sizex="1" data-sizey="1"><img width="130px" height="130px" src="pic1/full.jpg"/></li>
 					<li data-row="2" data-col="1" data-sizex="1" data-sizey="1"><h1>WORLD</h1></li>
 					<li data-row="3" data-col="1" data-sizex="1" data-sizey="1"><h1>OR ELSE<h1></li>
 
 					<li data-row="1" data-col="2" data-sizex="2" data-sizey="1"><h1>Poop<h1></li>
 					<li data-row="2" data-col="2" data-sizex="2" data-sizey="2"><h1>Boob<h1></li>
-					<!--
-					<li data-row="1" data-col="4" data-sizex="1" data-sizey="1"><h1>Star Wars<h1></li>
-					<li data-row="2" data-col="4" data-sizex="2" data-sizey="1"><h1>JUMP<h1></li>
-					<li data-row="3" data-col="4" data-sizex="1" data-sizey="1"><h1>OR YELL<h1></li>				
-
-					<li data-row="1" data-col="5" data-sizex="1" data-sizey="1"><h1>OR NOOOTOT<h1></li>
-					<li data-row="3" data-col="5" data-sizex="1" data-sizey="1"><h1>OR YOU CAN<h1></li>
-
-					<li data-row="1" data-col="6" data-sizex="1" data-sizey="1"><h1>ORNOCKING<h1></li>
-					<li data-row="2" data-col="6" data-sizex="1" data-sizey="2"><h1>POOOPOR ELSE<h1></li>
-
-					-->		
+					
 
 				</ul>
 			</div>
@@ -168,10 +157,12 @@
 					widget_margins: [10, 10], 
 					widget_base_dimensions: [140, 140],
 					min_cols: 1
-				}).data('gridster');
+				}).data('gridster').disable();
 			});
 
-			//MY STUFF
+			//////////////////////// 
+			//MY STUFF//////////////
+			////////////////////////
 
 			var movies = [];
 
@@ -191,7 +182,33 @@
   			var postersID = [];
   			var relevant;
 
-  						//function for getting data
+  			function renderData() {
+
+				var possRow = [1];
+				var possCol = [1];
+				var possX = [1];
+				var possY = [1];
+				//console.log("byuasid");
+				if(relevant){
+					console.log("in here");
+					d3.select("#gridsta").html("");
+					$.each(relevant.data, function(i){
+						d3.select("#gridsta")
+							.append("li")
+							.attr("data-row", possRow[Math.floor(Math.random() * possRow.length)])
+							.attr("data-col", possCol[Math.floor(Math.random() * possCol.length)])
+							.attr("data-sizex", possX[Math.floor(Math.random() * possX.length)])
+							.attr("data-sizey", possY[Math.floor(Math.random() * possY.length)])
+							.attr("class", "gs_w")
+								.append("img")
+								.attr("width", "130px")
+								.attr("height", "130px")
+								.attr("src", "../posters/"+relevant.data[i].id+"/full.jpg");
+					});
+				}
+			}
+
+  			//function for getting data
 			//Hit JSON Data with searchArray and characteristic!
 			function retrieveData() {
 				$.getJSON("../data.json", function(data){
@@ -229,10 +246,11 @@
 					          
 				    // $("#grid").append(posterImages);
 				}
-
+				renderData();
 			});
 
 			}
+
 
 			//Multiple selector possibilities 
 			d3.selectAll('input').on("click", function(){
@@ -245,7 +263,7 @@
 				searchArray = [];
 				genres = [];
 				ratings = [];
-				console.log("checked"+checked[0]);
+				//console.log("checked"+checked[0]);
 
 				checked[0].forEach(function(check){
 
@@ -348,6 +366,7 @@
 				*/
 				
 				retrieveData();
+				renderData();
 
 			});
 
