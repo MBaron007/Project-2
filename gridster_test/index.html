@@ -48,13 +48,21 @@
 		<section class="demo">
 			<div class="gridster">
 				<ul id="gridsta">
-					<li data-row="1" data-col="1" data-sizex="1" data-sizey="1"><img width="130px" height="130px" src="pic1/full.jpg"/></li>
-					<li data-row="2" data-col="1" data-sizex="1" data-sizey="1"><h1>WORLD</h1></li>
-					<li data-row="3" data-col="1" data-sizex="1" data-sizey="1"><h1>OR ELSE<h1></li>
+					<!--
+					<li data-row="2" data-col="2" data-sizex="1" data-sizey="1"><img width="130px" height="130px" src="pic1/full.jpg"/></li>
+					<li data-row="2" data-col="2" data-sizex="1" data-sizey="1"><h1>WORLD</h1></li>
+					<li data-row="2" data-col="2" data-sizex="1" data-sizey="1"><h1>OR ELSE<h1></li>
 
-					<li data-row="1" data-col="2" data-sizex="2" data-sizey="1"><h1>Poop<h1></li>
+					<li data-row="2" data-col="2" data-sizex="1" data-sizey="1"><h1>Poop<h1></li>
 					<li data-row="2" data-col="2" data-sizex="2" data-sizey="2"><h1>Boob<h1></li>
-					
+					<li data-row="2" data-col="2" data-sizex="1" data-sizey="1"><img width="130px" height="130px" src="pic1/full.jpg"/></li>
+					<li data-row="2" data-col="2" data-sizex="1" data-sizey="1"><h1>WORLD</h1></li>
+					<li data-row="2" data-col="2" data-sizex="1" data-sizey="1"><h1>OR ELSE<h1></li>
+
+					<li data-row="2" data-col="2" data-sizex="1" data-sizey="1"><h1>Poop<h1></li>
+					<li data-row="2" data-col="2" data-sizex="2" data-sizey="2"><h1>Boob<h1></li>
+					-->
+
 
 				</ul>
 			</div>
@@ -153,12 +161,19 @@
 			var gridster;
 
 			$(function() {
-				gridtster = $(".gridster > ul").gridster({
+				$(".gridster > ul").gridster({
 					widget_margins: [10, 10], 
-					widget_base_dimensions: [140, 140],
-					min_cols: 1
-				}).data('gridster').disable();
+					widget_base_dimensions: [140, 140]
+				});
 			});
+
+			$(function() {
+				gridster = $(".gridster ul").gridster().data('gridster');
+				gridster.serialize();
+				
+
+
+			})
 
 			//////////////////////// 
 			//MY STUFF//////////////
@@ -184,26 +199,43 @@
 
   			function renderData() {
 
-				var possRow = [1];
-				var possCol = [1];
-				var possX = [1];
-				var possY = [1];
+
+				var possRow = [1,2,3,4];
+				var possCol = [1,2];
+				//var possXYSize = [[1,1], [2,1], [1,2], [2,2]];
+				//how many rows do we need = length of relevant divided by 4
+
+				console.log(relevant);
+				
+				
+				//var possLoc = {}
 				//console.log("byuasid");
 				if(relevant){
 					console.log("in here");
-					d3.select("#gridsta").html("");
+					//3.select("#gridsta").html("");
+					var grids = gridster.serialize();
+					var numRemove = grid.length;
+
+					for (var i =0; i < numRemove; i++){
+						gridster.remove_widget($('.gridster li').eq(i));
+					}
+
 					$.each(relevant.data, function(i){
-						d3.select("#gridsta")
-							.append("li")
-							.attr("data-row", possRow[Math.floor(Math.random() * possRow.length)])
-							.attr("data-col", possCol[Math.floor(Math.random() * possCol.length)])
-							.attr("data-sizex", possX[Math.floor(Math.random() * possX.length)])
-							.attr("data-sizey", possY[Math.floor(Math.random() * possY.length)])
-							.attr("class", "gs_w")
-								.append("img")
-								.attr("width", "130px")
-								.attr("height", "130px")
-								.attr("src", "../posters/"+relevant.data[i].id+"/full.jpg");
+						var myRow = possRow[Math.floor(Math.random() * possRow.length)];
+						var myCol = possCol[Math.floor(Math.random() * possCol.length)];
+						//console.log("x: " + mySize[0] + " y: " + mySize[1]);
+						// d3.select("#gridsta")
+						// 	.append("li")
+						// 	.attr("data-row", "")
+						// 	.attr("data-col", "")
+						// 	.attr("data-sizex", mySize[0])
+						// 	.attr("data-sizey", mySize[1])
+						// 	.attr("class", "gs_w")
+						// 		.append("img")
+						// 		.attr("width", "100%")
+						// 		.attr("height", "100%")
+						// 		.attr("src", "../posters/"+relevant.data[i].id+"/full.jpg");
+						gridster.add_widget('<li class="new"><img width="100%" height="100%" src="../posters/'+relevant.data[i].id+'/full.jpg"/></li>', myRow, myCol);
 					});
 				}
 			}
