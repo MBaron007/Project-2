@@ -245,6 +245,10 @@
 				visibility: hidden;
 		}
 
+		#welcome{
+			font-size: 250%;
+		}
+
 		</style>
 
 		<!--New imports for d3 grids-->
@@ -357,6 +361,7 @@
 
 		<div id="grid">
 			<div id="movie_grid" class="gridster">
+				<p id="welcome">Welcome to Movie Mosaic.  Choose your desired years, genres, ratings, single search criteria, and sorting options in order to view movies that fit those parameters.  Hover over the movie poster images in order to view their titles and values for the specified criteria.  Feel free to add and remove years, genres, and ratings as well as change the criteria and sorting options as you see fit (and you can click and drag the posters!).</p>
 				<ul>
 				</ul>
 			</div>
@@ -424,8 +429,10 @@
 
   			function renderData() {
 
-				var possRow = [1,2,3,4];
+				var possRow = [1,2,3];
 				var possCol = [1,2];
+
+				var combos = [[1,1],[1,2],[2,2],[2,3]];
 
 				$("#grid").remove();
 				if (relevant.data != null && relevant.data.length > 0) {
@@ -447,9 +454,10 @@
 				}).data('gridster');
 
 				$.each(relevant.data, function(i){
-					var myRow = possRow[Math.floor(Math.random() * possRow.length)];
-					var myCol = possCol[Math.floor(Math.random() * possCol.length)];
-					gridster.add_widget('<li class="new"><img width="100%" height="100%" id="' + relevant.data[i].id + '" src="../posters/'+relevant.data[i].id+'/full.jpg"/></li>', myCol, myRow);
+					// var myRow = possRow[Math.floor(Math.random() * possRow.length)];
+					// var myCol = possCol[Math.floor(Math.random() * possCol.length)];
+					var myCombo = combos[Math.floor(Math.random() * combos.length)];
+					gridster.add_widget('<li class="new"><img width="100%" height="100%" id="' + relevant.data[i].id + '" src="../posters/'+relevant.data[i].id+'/full.jpg"/></li>', myCombo[0], myCombo[1]);
 				});
 
 				d3.selectAll(".new").on("mouseover", function(){
