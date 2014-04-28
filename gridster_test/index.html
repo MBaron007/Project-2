@@ -191,7 +191,7 @@
 
 			.caption { 
 			   position: relative; 
-			   width: 100%; /* for IE 6 */
+			   /*width: 100%;*/ /* for IE 6 */
 			}
 
 			h2 { 
@@ -199,6 +199,7 @@
 			   top: 200px; 
 			   left: 0; 
 			   width: 100%; 
+			   color : red;
 			}
 
 			h2 span { 
@@ -208,6 +209,7 @@
 			   background: rgb(0, 0, 0); /* fallback color */
 			   background: rgba(0, 0, 0, 0.7);
 			   padding: 10px; 
+			   opacity: 1;
 			}
 
 			h2 span.spacer {
@@ -411,7 +413,8 @@
 
 					d3.selectAll(".new").on("mouseover", function(){
 						var checkID = $(this).children()[0];
-						console.log(checkID);
+						checkID = $(checkID).attr("id");
+						//console.log(checkID);
 						var mov;
 						relevant.data.forEach(function(movie){
 							if(movie.id == checkID){
@@ -435,10 +438,10 @@
 						//console.log($(this).attr("id"));
 						$(this).css("opacity", 1)
 						
-						//$(this).children().remove("h2");
+						$(this).children().remove("h2");
 						//console.log("kiddies");
 						//console.log(children);
-						//$(this).unwrap();
+						$(this).unwrap();
 					});
 				}
 
