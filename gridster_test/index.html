@@ -58,13 +58,6 @@
 
 			}
 
-			#info{
-				/*position: relative;
-				margin-left: 0px;
-				margin-top: -450px;*/
-
-
-			}
 
 
 			.button {
@@ -189,10 +182,7 @@
 				display:none;
 			}
 
-			.caption { 
-			   position: relative; 
-			   /*width: 100%;*/ /* for IE 6 */
-			}
+
 
 			h2 { 
 			   position: absolute; 
@@ -217,6 +207,37 @@
    				opacity: 0;
 			}
 
+			#info {
+				position: fixed;
+				width: 20%;
+				background-color: rgb(79, 137, 139);
+				left: 79%;
+				top: 60%;
+				margin-top: 10%;
+				overflow: visible;
+				color: white;
+				font-weight: bolder;
+				z-index: 999;
+				padding: 3px;
+				font-size: larger;
+				visibility: hidden;
+			}
+
+			#pref {
+				position: fixed;
+				width: 20%;
+				background-color: rgb(79, 137, 139);
+				left: 82%;
+				top: 18%;
+				overflow: visible;
+				color: white;
+				font-weight: bolder;
+				z-index: 999;
+				padding: 3px;
+				font-size: larger;
+				visibility: hidden;
+		}
+
 		</style>
 
 		<!--New imports for d3 grids-->
@@ -225,6 +246,7 @@
 	</head>
 	<body>
 		<!--Start HTML from me-->
+
 		<div id="menu_container">
 			<div id="menu">
 
@@ -322,6 +344,10 @@
 			</div>
 		</div>
 
+
+		<div id="info"></div>
+		<div id="pref"></div>
+
 		<div id="grid">
 			<div id="movie_grid" class="gridster">
 				<ul>
@@ -382,6 +408,7 @@
   			var postersID = [];
   			var relevant;
 
+
   			function renderData() {
 
 
@@ -391,7 +418,12 @@
 				if ($(".gridster li").length > 0) {
 					$("#grid").remove();
 					$("body").append("<div id='grid'><div id='movie_grid' class='gridster'><ul></ul></div></div>");
-				}
+				} else {
+					if (relevant.data == null || relevant.data == []){
+						console.log("here");
+						$("#pref").css("visibility", "hidden");
+					}
+				} 
 
 
 				if (relevant.data != null && relevant.data != []) {
@@ -424,26 +456,32 @@
 								return false;
 							}
 						});
+
+						$("#info").html("");
+
+						$("#info").append("<p>"+mov["Film"]+"</p><br /><p>"+singleCharacteristic + ": " + mov[singleCharacteristic]+ "</p>");
 						
-						$(this).css("opacity", .2)
-						$(this).wrap("<div class='caption'></div>");
-						if($(this)){
-							$(this).append("<h2>" + mov["Film"] + "<span class='spacer'></span><br /><span class='spacer'></span>" + singleCharacteristic + ": " + mov[singleCharacteristic] + "</span></h2>");
-							// .append("<h2><span>"+mov["Film"]+"<br />
-							// 	"+singleCharacteristic+": "+mov[singleCharacteristic]+"</span></h2>");
-						}	
+						$(this).css("opacity", .2);
+						$("#info").css("visibility", "visible");
+						// //$(this).wrap("<div class='caption'></div>");
+						// if($(this)){
+						// 	$(this).append("<h2><span class='spacer'></span><br /><span class='spacer'></span>" + singleCharacteristic + ": " + mov[singleCharacteristic] + "</span></h2>");
+							
+						// }	
 					});
 
 					d3.selectAll(".new").on("mouseout", function(){
 						//console.log($(this).attr("id"));
-						$(this).css("opacity", 1)
+						 $(this).css("opacity", 1);
+						 $("#info").css("visibility", "hidden");
+
 						
-						$(this).children().remove("h2");
-						//console.log("kiddies");
-						//console.log(children);
-						$(this).unwrap();
+						// $(this).children().remove("h2");
+						// //console.log("kiddies");
+						// //console.log(children);
+						// $(this).unwrap();
 					});
-				}
+				} 
 
 			}
 
@@ -470,6 +508,7 @@
 					console.log(highLow);
 					relevant = get_data(years, genres, ratings, singleCharacteristic, highLow);
 					console.log(relevant);
+
 				} else {
 					console.log("Empty...");
 					relevant = {'data' : [], 'unused' : []};
@@ -656,6 +695,51 @@
 				}
 				
 				retrieveData();
+				$("#pref").html("");
+				$("#pref").css("visibility", "hidden");
+
+				if(years.length > 0){
+					$("#pref").css("visibility", "visible");
+					var p1 = $("#pref").append("<p><u>Years:</u> ")
+					years.forEach(function(year){
+						p1.append(year+", ");
+					});
+					p1.append("</p>");
+				}
+
+				if(genres.length > 0){
+					$("#pref").css("visibility", "visible");
+					var p = $("#pref").append("<p><u>Genres:</u> ");
+					genres.forEach(function(g){
+						p.append(g+", ");
+					});
+					p.append("</p>");
+				}
+
+				if(ratings.length > 0){
+					$("#pref").css("visibility", "visible");
+					var p2 = $("#pref").append("<p><u>Ratings:</u> ");
+					ratings.forEach(function(r){
+						p2.append(r+", ");
+					});
+					p2.append("</p>");
+				}
+
+				if(singleCharacteristic != ""){
+					$("#pref").css("visibility", "visible");
+					var p3 = $("#pref").append("<p><u>Criteria:</u> " + singleCharacteristic + "</p>");
+				}
+
+				var p4;
+				if(highLow == 0){
+					$("#pref").css("visibility", "visible");
+					p4 = $("#pref").append("<p><u>Sort By:</u> Lowest</p>");
+				} 
+				if(highLow == 1){
+					$("#pref").css("visibility", "visible");
+					p4 = $("#pref").append("<p><u>Sort By:</u> Highest</p>");
+				}
+
 
 			});
 
