@@ -335,12 +335,18 @@
 			var gridster = [];
 			var grid_number = 0;
 			var checkTime = 0;
+			var hoverEnabled = true;
 
 			// for the scroll down menus
 			$(document).ready(function () {
 			    $(".hoverli").hover(
-				  function () {
-				     $(this).children().eq(1).slideDown('slow');
+				  	function () {
+					  	if (hoverEnabled) {
+					  		hoverEnabled = false;
+					    	$(this).children().eq(1).slideDown('slow', function () {
+					    		hoverEnabled = true;
+					    	});
+					 	}
 				  }, 
 				  function () {
 				     $(this).children().eq(1).slideUp('slow');
@@ -401,11 +407,7 @@
 						widget_base_dimensions: [140, 140]
 					}).data('gridster');
 
-					console.log("Grister:");
-					console.log(gridster);
-
 					$.each(relevant.data, function(i){
-						console.log("ONCE");
 						var myRow = possRow[Math.floor(Math.random() * possRow.length)];
 						var myCol = possCol[Math.floor(Math.random() * possCol.length)];
 						gridster.add_widget('<li class="new"><img width="100%" height="100%" id="' + relevant.data[i].id + '" src="../posters/'+relevant.data[i].id+'/full.jpg"/></li>', myCol, myRow);
@@ -426,7 +428,7 @@
 						});
 						
 						$(this).css("opacity", .2)
-						$(this).wrap("<div class='caption'></div>");
+						$(this).append("<div class='caption'></div>");
 						if($(this)){
 							$(this).append("<h2>" + mov["Film"] + "<span class='spacer'></span><br /><span class='spacer'></span>" + singleCharacteristic + ": " + mov[singleCharacteristic] + "</span></h2>");
 							// .append("<h2><span>"+mov["Film"]+"<br />
