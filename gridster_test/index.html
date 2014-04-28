@@ -12,12 +12,38 @@
 	    <script src="//code.jquery.com/jquery-1.9.1.js"></script>
 	    <script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
 		<style type="text/css">
+			body {
+				margin:0px;
+				padding:0px;
+				background-color: #004756;
+			}
+
 			svg {
 				border: solid black 1px;
 			}
 
 			form {
 				float : left;
+			}
+
+			#menu_container {
+				width:100%;
+				margin:0px;
+				background-color: rgb(79, 137, 139);
+				position:fixed;
+				top:0px;
+				overflow:visible;
+				z-index: 999;
+			}
+
+			#menu {
+				width:1000px;
+				height:34px;
+				background-color: rgb(79, 137, 139);
+				padding:12px;
+				margin-left:auto;
+				margin-right:auto;
+				overflow:visible;
 			}
 
 			#grid {
@@ -37,6 +63,115 @@
 			}
 
 
+			.button {
+				padding: 0px 15px;
+			    margin: auto;
+			    float:left;
+			    width:100px;
+			    overflow:visible;
+			    height:50px;
+			}
+
+			ul.filemenu {
+			    margin:0; 
+			    padding:0; 
+			    list-style:none;
+			}
+
+			ul.hover {
+				margin:0px;
+				padding:0px;
+				margin-right: 30px;
+				font-size: 12px;
+			}
+
+			.menu_class {
+			    border: 1px solid #394E4C;
+				border-radius: 2px;
+			}
+
+			.file_menu {
+			    display:none;
+			    width:100px;
+			    border: 1px solid #1c1c1c;
+			    padding:0px;
+			    margin:0px;
+			}
+
+			.file_menu li {
+			    background-color: #ECECEC;
+			    margin:0; 
+			    padding:0; 
+			    list-style:none;
+			    color:#000;
+			    border-bottom:1px solid #DCDCDC;
+			}
+
+			.file_menu li:hover {
+			    background-color: #79D3CF;
+			}
+
+			.file_menu li a {
+			    color:#FFFFFF; 
+			    text-decoration:none; 
+			    padding:10px; 
+			    display:block;
+			}
+
+			.file_menu li a:hover {
+			    padding:10px;
+			    font-weight:bold;
+			    color: #F00880;
+			}
+
+			#select_years {
+				width: 80px;
+				text-align:center;
+				padding:10px;
+			}
+
+			.genres, .genres li, .criteria, .criteria li {
+				width:180px!important;
+			}
+
+			#select_genres {
+				width: 160px!important;
+				text-align:center;
+				padding:10px;
+			}
+
+			#select_ratings {
+				width: 80px;
+				text-align:center;
+				padding:10px;
+			}
+
+			#select_sort {
+				width: 80px!important;
+				text-align:center;
+				padding:10px;
+			}
+
+			#select_criteria {
+				width: 160px!important;
+				text-align:center;
+				padding:10px;
+			}
+
+			.hover li {
+				width:100px;
+			}
+
+			.button.right {
+				float:right;
+			}
+
+			.button_div {
+				background-color: #446160;
+				color: #FFF;
+				font-size: 15px;
+				font-weight: bold;
+			}
 
 		</style>
 
@@ -49,119 +184,127 @@
 		<section class="demo">
 			<div class="gridster">
 				<ul id="gridsta">
-					<!--
-					<li data-row="2" data-col="2" data-sizex="1" data-sizey="1"><img width="130px" height="130px" src="pic1/full.jpg"/></li>
-					<li data-row="2" data-col="2" data-sizex="1" data-sizey="1"><h1>WORLD</h1></li>
-					<li data-row="2" data-col="2" data-sizex="1" data-sizey="1"><h1>OR ELSE<h1></li>
-
-					<li data-row="2" data-col="2" data-sizex="1" data-sizey="1"><h1>Poop<h1></li>
-					<li data-row="2" data-col="2" data-sizex="2" data-sizey="2"><h1>Boob<h1></li>
-					<li data-row="2" data-col="2" data-sizex="1" data-sizey="1"><img width="130px" height="130px" src="pic1/full.jpg"/></li>
-					<li data-row="2" data-col="2" data-sizex="1" data-sizey="1"><h1>WORLD</h1></li>
-					<li data-row="2" data-col="2" data-sizex="1" data-sizey="1"><h1>OR ELSE<h1></li>
-
-					<li data-row="2" data-col="2" data-sizex="1" data-sizey="1"><h1>Poop<h1></li>
-					<li data-row="2" data-col="2" data-sizex="2" data-sizey="2"><h1>Boob<h1></li>
-					-->
-
-
 				</ul>
 			</div>
 		</section>
 	</div>
 		<!--Start HTML from me-->
-		<form action="" id="firstForm">
-			Year:<br/>
-			<input id="seven" type="checkbox" name="year" value="2007">2007<br/>
-			<input id="eight" type="checkbox" name="year" value="2008">2008<br/>
-			<input id="nine" type="checkbox" name="year" value="2009">2009<br/>
-			<input id="ten" type="checkbox" name="year" value="2010">2010<br/> 
-			<input id="eleven" type="checkbox" name="year" value="80s">2011<br/>
-			<input id="twelve" type="checkbox" name="year" value="90s">2012<br/>
-			<input id="thirteen" type="checkbox" name="year" value="2ks">2013<br/>
-		</form>
+	<div id="menu_container">
+		<div id="menu">
 
+			<div class="button">
+			    <ul class="hover">
+			       <li class="hoverli">
+						<div id="select_years" width="184" height="32" class="menu_class button_div" />Years</div>
+				        <ul class="file_menu">
+					        <li id=""><input id="seven" type="" name="year" value="2007">2007<br/></li>
+							<li><input id="eight" type="checkbox" name="year" value="2008">2008<br/></li>
+							<li><input id="nine" type="checkbox" name="year" value="2009">2009<br/></li>
+							<li><input id="ten" type="checkbox" name="year" value="2010">2010<br/></li>
+							<li><input id="eleven" type="checkbox" name="year" value="80s">2011<br/></li>
+							<li><input id="twelve" type="checkbox" name="year" value="90s">2012<br/></li>
+							<li><input id="thirteen" type="checkbox" name="year" value="2ks">2013<br/></li>
+				        </ul>
+			     	</li>
+				</ul>
+			</div>
 
+			<div class="button genres">
+			    <ul class="hover genres">
+			       <li class="hoverli genres">
+						<div id="select_genres" width="184" height="32" class="menu_class button_div" />Genres</div>
+				        <ul class="file_menu genres">
+					        <li><input id="action" type="checkbox" name="genre" value="action">Action & Adventure<br/></li>
+							<li><input id="animation" type="checkbox" name="genre" value="animation">Animation<br/></li>
+							<li><input id="arthouse" type="checkbox" name="genre" value="comedy">Art House & International<br/></li>
+							<li><input id="classics" type="checkbox" name="genre" value="comedy">Classics<br/></li>
+							<li><input id="comedy" type="checkbox" name="genre" value="comedy">Comedy<br/></li>
+							<li><input id="documentary" type="checkbox" name="genre" value="romantic">Documentary<br/></li>
+							<li><input id="drama" type="checkbox" name="genre" value="comedy">Drama<br/></li>
+							<li><input id="horror" type="checkbox" name="genre" value="horror">Horror<br/></li>
+							<li><input id="kids" type="checkbox" name="genre" value="kids">Kids & Family<br/></li>
+							<li><input id="musical" type="checkbox" name="genre" value="horror">Musical & Performing Arts<br/></li>
+							<li><input id="mystery" type="checkbox" name="genre" value="comedy">Mystery & Suspense<br/></li>
+							<li><input id="romance" type="checkbox" name="genre" value="romantic">Romance<br/></li>
+							<li><input id="scifi" type="checkbox" name="genre" value="romantic">Science Fiction & Fantasy<br/></li>
+							<li><input id="special" type="checkbox" name="genre" value="horror">Special Interests<br/></li>
+							<li><input id="sports" type="checkbox" name="genre" value="horror">Sports & Fitness<br/></li>
+							<li><input id="tv" type="checkbox" name="genre" value="horror">Television<br/></li>
+							<li><input id="western" type="checkbox" name="genre" value="horror">Western<br/></li>
+				        </ul>
+			     	</li>
+				</ul>
+			</div>
 
-		<form action="">
-			<!--Change values? Necessary?-->
-			Genres:<br/>
-			<input id="action" type="checkbox" name="genre" value="action">Action & Adventure<br/> 
-			<input id="animation" type="checkbox" name="genre" value="animation">Animation<br/>
-			<input id="arthouse" type="checkbox" name="genre" value="comedy">Art House & International<br/>
-			<input id="classics" type="checkbox" name="genre" value="comedy">Classics<br/>
-			<input id="comedy" type="checkbox" name="genre" value="comedy">Comedy<br/>
-			<input id="documentary" type="checkbox" name="genre" value="romantic">Documentary<br/>
-			<input id="drama" type="checkbox" name="genre" value="comedy">Drama<br/>
-			<input id="horror" type="checkbox" name="genre" value="horror">Horror<br/>
-			<input id="kids" type="checkbox" name="genre" value="kids">Kids & Family<br/>
-			<input id="musical" type="checkbox" name="genre" value="horror">Musical & Performing Arts<br/>
-			<input id="mystery" type="checkbox" name="genre" value="comedy">Mystery & Suspense<br/>
-			<input id="romance" type="checkbox" name="genre" value="romantic">Romance<br/>
-			<input id="scifi" type="checkbox" name="genre" value="romantic">Science Fiction & Fantasy<br/>
-			<input id="special" type="checkbox" name="genre" value="horror">Special Interests<br/>
-			<input id="sports" type="checkbox" name="genre" value="horror">Sports & Fitness<br/>
-			<input id="tv" type="checkbox" name="genre" value="horror">Television<br/>
-			<input id="western" type="checkbox" name="genre" value="horror">Western<br/>
-		</form>
+			<div class="button">
+			    <ul class="hover">
+			       <li class="hoverli">
+						<div id="select_ratings" width="184" height="32" class="menu_class button_div" />Ratings</div>
+				        <ul class="file_menu">
+					        <li><input id="G" type="checkbox" name="year" value="2007">G<br/></li>
+							<li><input id="PG" type="checkbox" name="year" value="2008">PG<br/></li>
+							<li><input id="PG-13" type="checkbox" name="year" value="2009">PG-13<br/></li>
+							<li><input id="R" type="checkbox" name="year" value="2010">R<br/></li>
+							<li><input id="NC-17" type="checkbox" name="year" value="80s">NC-17<br/></li>
+				        </ul>
+			     	</li>
+				</ul>
+			</div>
 
-		<form action="">
-			Rating:<br/>
-			<input id="G" type="checkbox" name="year" value="2007">G<br/>
-			<input id="PG" type="checkbox" name="year" value="2008">PG<br/>
-			<input id="PG-13" type="checkbox" name="year" value="2009">PG-13<br/>
-			<input id="R" type="checkbox" name="year" value="2010">R<br/> 
-			<input id="NC-17" type="checkbox" name="year" value="80s">NC-17<br/>
-			
-		</form>
+			<div class="button right criteria">
+			    <ul class="hover criteria">
+			       <li class="hoverli criteria">
+						<div id="select_criteria" width="184" height="32" class="menu_class button_div" />Criteria</div>
+				        <ul class="file_menu criteria">
+					        <li><input id="openingweekendtheaters" type="radio" name="char" value="rating">Number of Theaters In Opening Weekend<br/></li>
+							<li><input id="worldwide" type="radio" name="char" value="rating">Worldwide Gross Profit<br/></li>
+							<li><input id="openingweekend" type="radio" name="char" value="rating">Opening Weekend Revenue<br/></li>
+							<li><input id="audience" type="radio" name="char" value="rating">Audience Score<br/></li>
+							<li><input id="market" type="radio" name="char" value="rating">Market Profitability<br/></li>
+							<li><input id="boxofficeavg" type="radio" name="char" value="rating">Box Office Average Revenue Opening Weekend<br/></li>
+							<li><input id="budget" type="radio" name="char" value="rating">Budget<br/></li>
+							<li><input id="foreigngross" type="radio" name="char" value="rating">Foreign Gross Profit<br/></li>
+							<li><input id="critics" type="radio" name="char" value="rating">Critics Score<br/></li>
+							<li><input id="domesticgross" type="radio" name="char" value="rating">Domestic Gross Profit<br/></li>
+				        </ul>
+			     	</li>
+				</ul>
+			</div>
 
-
-		<form action="">
-			Criteria:<br/>
-			<input id="openingweekendtheaters" type="radio" name="char" value="rating">Number of Theaters In Opening Weekend<br/>
-			<input id="worldwide" type="radio" name="char" value="rating">Worldwide Gross Profit<br/>
-			<input id="openingweekend" type="radio" name="char" value="rating">Opening Weekend Revenue<br/>
-			<input id="audience" type="radio" name="char" value="rating">Audience Score<br/>
-			<input id="market" type="radio" name="char" value="rating">Market Profitability<br/>
-			<input id="boxofficeavg" type="radio" name="char" value="rating">Box Office Average Revenue Opening Weekend<br/>
-			<input id="budget" type="radio" name="char" value="rating">Budget<br/>
-			<input id="foreigngross" type="radio" name="char" value="rating">Foreign Gross Profit<br/>
-			<input id="critics" type="radio" name="char" value="rating">Critics Score<br/>
-			<input id="domesticgross" type="radio" name="char" value="rating">Domestic Gross Profit<br/>
-
-		</form>
-
-		<form action="">
-			Ordering:<br/>
-			<input id="one" type="radio" name="char" value="rating">Lowest<br/>
-			<input id="zero" type="radio" name="char" value="rating">Highest<br/>
-		</form>
-
-		<p>Number of Films to Display:</p>
-		<select id="numMovies">
-			<option value="1">1</option>
-			<option value="2">2</option>
-			<option value="3">3</option>
-			<option value="4">4</option>
-			<option value="5">5</option>
-			<option value="6">6</option>
-			<option value="7">7</option>
-			<option value="8">8</option>
-			<option value="9" selected="selected">9</option>
-			<option value="10">10</option>
-			<option value="11">11</option>
-			<option value="12">12</option>
-		</select>
+			<div class="button right">
+			    <ul class="hover">
+			       <li class="hoverli">
+						<div id="select_sort" width="184" height="32" class="menu_class button_div" />Sort By</div>
+				        <ul class="file_menu">
+					        <li><input id="one" type="radio" name="char" value="rating">Lowest<br/></li>
+							<li><input id="zero" type="radio" name="char" value="rating">Highest<br/></li>
+				        </ul>
+			     	</li>
+				</ul>
+			</div>
+		</div>
+	</div>
 
 		<div id="grid"></div>
 		<div id="info"></div>
 
-		<!--End html from me-->
 		<script type="text/javascript" src="assets/jquery.js"></script>
 		<script type="text/javascript" src="assets/jquery.gridster.js" charster="utf-8"></script>
 		<script type="text/javascript">
 			var gridster;
 			var checkTime = 0;
+
+			// for the scroll down menus
+			$(document).ready(function () {
+			    $(".hoverli").hover(
+				  function () {
+				     $(this).children().eq(1).slideDown('medium');
+				  }, 
+				  function () {
+				     $(this).children().eq(1).slideUp('medium');
+				  }
+				);
+			});
 
 			$(function() {
 				$(".gridster ul").gridster({
@@ -173,26 +316,18 @@
 			$(function() {
 				gridster = $(".gridster ul").gridster().data('gridster');
 				//console.log(gridster.serialize());
-				//gridster.add_widget('<li class="new">The HTML of the widget...</li>', 2, 1);
-				//gridster.add_widget('<li class="new">The HTML of the widget...</li>', 2, 1);
-				
-
-
 			})
 
 			function removeWidget() {
 				gridster.remove_widget( $(".gridster ul"));
 			}
-			//////////////////////// 
-			//MY STUFF//////////////
-			////////////////////////
 
 			var movies = [];
 
 			//User preferences 
 			var multSelectors = [];
 			var singleCharacteristic;
-			var searchArray = [];
+			var years = [];
 			var genres = [];
 			var ratings = [];
 			var highLow;
@@ -225,7 +360,6 @@
 
 					gridster = $(".gridster ul").gridster().data('gridster');
 
-
 					console.log("here is rel");
 					console.log(relevant);
 
@@ -238,21 +372,18 @@
 			}
 
   			//function for getting data
-			//Hit JSON Data with searchArray and characteristic!
+			//Hit JSON Data with years and characteristic!
 			function retrieveData() {
 				$.getJSON("../data.json", function(data){
 				// global variable (from sorting.js) to store all movies.
 				movies = data;
 
-				//console.log(searchArray);
-				//console.log(singleCharacteristic);
-				//console.log(highLow);
-				if(searchArray.length > 0 && singleCharacteristic != "" && (highLow == 0 || highLow == 1)){
+				if(years.length > 0 && singleCharacteristic != "" && (highLow == 0 || highLow == 1)){
 					console.log("CALL:");
-					console.log(searchArray);
+					console.log(years);
 					console.log(genres);
 					console.log(ratings);
-					relevant = get_data(searchArray, genres, ratings, singleCharacteristic, highLow);
+					relevant = get_data(years, genres, ratings, singleCharacteristic, highLow);
 				} else {
 					relevant = {'data' : [], 'unused' : []};
 				}
@@ -282,7 +413,8 @@
 
 
 			//Multiple selector possibilities 
-			d3.selectAll('input').on("click", function(){
+			d3.selectAll('input').on("click", function(val){
+				console.log("click!!!");
 				var checked = d3.selectAll('input');
 				//console.log(checked[0]);
 				var counter = 0;
@@ -290,15 +422,9 @@
 
 				multSelectors = [];
 				singleCharacteristic = [];
-				searchArray = [];
+				years = [];
 				genres = [];
 				ratings = [];
-				//console.log("checked"+checked[0]);
-
-				//if we add category to array
-					//counterArray++
-				//if we remove category from array
-
 
 				checked[0].forEach(function(check){
 
@@ -340,19 +466,19 @@
 					//console.log(select.id);
 
 					if(select.id == "seven"){
-						searchArray.push(2007);
+						years.push(2007);
 					} else if (select.id == "eight"){
-						searchArray.push(2008);
+						years.push(2008);
 					} else if (select.id == "nine"){
-						searchArray.push(2009);
+						years.push(2009);
 					} else if (select.id == "ten"){
-						searchArray.push(2010);
+						years.push(2010);
 					} else if (select.id == "eleven"){
-						searchArray.push(2011);
+						years.push(2011);
 					} else if (select.id == "twelve"){
-						searchArray.push(2012);
+						years.push(2012);
 					} else if (select.id == "thirteen"){
-						searchArray.push(2013);
+						years.push(2013);
 					} else if (select.id == "action"){
 						genres.push("Action & Adventure");
 					} else if (select.id == "animation"){
@@ -393,7 +519,7 @@
 				});
 
 				/*
-				console.log(searchArray);
+				console.log(years);
 				console.log(singleCharacteristic);
 				console.log(genres);
 				console.log(ratings);
