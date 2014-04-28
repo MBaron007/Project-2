@@ -268,8 +268,8 @@
 			       <li class="hoverli">
 						<div id="select_sort" width="184" height="32" class="menu_class button_div" />Sort By</div>
 				        <ul class="file_menu order">
-					        <li><input id="one" type="radio" name="char" value="rating">Lowest<br/></li>
-							<li><input id="zero" type="radio" name="char" value="rating">Highest<br/></li>
+					        <li><input id="one" type="checkbox" name="char" value="rating">Lowest<br/></li>
+							<li><input id="zero" type="checkbox" name="char" value="rating">Highest<br/></li>
 				        </ul>
 			     	</li>
 				</ul>
@@ -280,16 +280,16 @@
 			       <li class="hoverli criteria">
 						<div id="select_criteria" width="184" height="32" class="menu_class button_div" />Criteria</div>
 				        <ul class="file_menu criteria">
-					        <li><input id="openingweekendtheaters" type="radio" name="char" value="rating">Number of Theaters In Opening Weekend<br/></li>
-							<li><input id="worldwide" type="radio" name="char" value="rating">Worldwide Gross Profit<br/></li>
-							<li><input id="openingweekend" type="radio" name="char" value="rating">Opening Weekend Revenue<br/></li>
-							<li><input id="audience" type="radio" name="char" value="rating">Audience Score<br/></li>
-							<li><input id="market" type="radio" name="char" value="rating">Market Profitability<br/></li>
-							<li><input id="boxofficeavg" type="radio" name="char" value="rating">Box Office Average Revenue Opening Weekend<br/></li>
-							<li><input id="budget" type="radio" name="char" value="rating">Budget<br/></li>
-							<li><input id="foreigngross" type="radio" name="char" value="rating">Foreign Gross Profit<br/></li>
-							<li><input id="critics" type="radio" name="char" value="rating">Critics Score<br/></li>
-							<li><input id="domesticgross" type="radio" name="char" value="rating">Domestic Gross Profit<br/></li>
+					        <li><input id="openingweekendtheaters" type="checkbox" name="char" value="rating">Number of Theaters In Opening Weekend<br/></li>
+							<li><input id="worldwide" type="checkbox" name="char" value="rating">Worldwide Gross Profit<br/></li>
+							<li><input id="openingweekend" type="checkbox" name="char" value="rating">Opening Weekend Revenue<br/></li>
+							<li><input id="audience" type="checkbox" name="char" value="rating">Audience Score<br/></li>
+							<li><input id="market" type="checkbox" name="char" value="rating">Market Profitability<br/></li>
+							<li><input id="boxofficeavg" type="checkbox" name="char" value="rating">Box Office Average Revenue Opening Weekend<br/></li>
+							<li><input id="budget" type="checkbox" name="char" value="rating">Budget<br/></li>
+							<li><input id="foreigngross" type="checkbox" name="char" value="rating">Foreign Gross Profit<br/></li>
+							<li><input id="critics" type="checkbox" name="char" value="rating">Critics Score<br/></li>
+							<li><input id="domesticgross" type="checkbox" name="char" value="rating">Domestic Gross Profit<br/></li>
 				        </ul>
 			     	</li>
 				</ul>
@@ -384,19 +384,28 @@
   			//function for getting data
 			//Hit JSON Data with years and characteristic!
 			function retrieveData() {
+				console.log("retrieve Data!");
 				$.getJSON("../data.json", function(data){
 				// global variable (from sorting.js) to store all movies.
 				movies = data;
 
-				if(years.length > 0 && singleCharacteristic != "" && (highLow == 0 || highLow == 1)){
-					/* console.log("CALL:");
+				console.log("CALL:");
 					console.log(years);
 					console.log(genres);
 					console.log(ratings);
 					console.log(singleCharacteristic);
-					console.log(highLow); */
+					console.log(highLow);
+				if(years.length > 0 && singleCharacteristic != "" && (highLow == 0 || highLow == 1)){
+					console.log("CALL:");
+					console.log(years);
+					console.log(genres);
+					console.log(ratings);
+					console.log(singleCharacteristic);
+					console.log(highLow);
 					relevant = get_data(years, genres, ratings, singleCharacteristic, highLow);
+					console.log(relevant);
 				} else {
+					console.log("Empty...");
 					relevant = {'data' : [], 'unused' : []};
 				}
 				
@@ -432,6 +441,9 @@
 					siblings.mouseover(function() { $(this).css("background-color","#79D3CF"); });
 					siblings.mouseout(function() { $(this).css("background-color","#ECECEC"); });
 					checkbox.prop('checked', true);
+					$.each(siblings, function () {
+						$(this).children().first().prop('checked', false);
+					});
 					$(this).css('background-color','rgb(90, 176, 178)');
 				} else {
 					if (checkbox.prop('checked') == false) {
