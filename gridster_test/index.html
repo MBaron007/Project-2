@@ -26,6 +26,12 @@
 				border: solid black 1px;
 			}
 
+			.sidebar_head {
+				color: #FFF;
+				font-weight: bold;
+				font-size: 16px;
+			}
+
 			form {
 				float : left;
 			}
@@ -215,26 +221,29 @@
 			}
 
 			#info {
-				background-color: rgb(79, 137, 139);
 				margin-top: 10%;
 				overflow: visible;
-				color: white;
+				color: rgb(17, 120, 189);
 				font-weight: bolder;
 				z-index: 999;
 				padding: 3px;
-				font-size: larger;
+				font-size: 18px;
 				visibility: hidden;
 			}
 
 			#pref {
-				background-color: rgb(79, 137, 139);
 				overflow: visible;
 				color: white;
 				font-weight: bolder;
 				z-index: 999;
 				padding: 3px;
+				width:200px;
 				font-size: larger;
 				visibility: hidden;
+			}
+
+			#fixed_right {
+				position:fixed;
 			}
 
 			#left {
@@ -265,7 +274,8 @@
 
 			#right {
 				float: left;
-				margin-left: 10px;
+				margin-left: 40px;
+				margin-top:76px;
 				width: 300px;
 			}
 
@@ -274,7 +284,20 @@
 			}
 
 			#welcome{
-				font-size: 250%;
+				font-size: 18px;
+				text-align:center;
+				color:#FFF;
+				width:750px;
+				margin-top:150px;
+			}
+
+			#mosaic_title {
+				font-size: 72px;
+			}
+
+			.movie_title {
+				font-size: 32px;
+				color:rgb(96, 150, 2);
 			}
 
 			.new {
@@ -399,15 +422,17 @@
 				<div id="grid">
 					<div id="movie_grid" class="gridster">
 						<ul>
-							<p id="welcome">Welcome to Movie Mosaic.  Choose your desired years, genres, ratings, single search criteria, and sorting options in order to view movies that fit those parameters.  Hover over the movie poster images in order to view their titles and values for the specified criteria.  Feel free to add and remove years, genres, and ratings as well as change the criteria and sorting options as you see fit (and you can click and drag the posters!).</p>
+							<p id="welcome"><span id="mosaic_title">Movie Mosaic</span><br/ >Choose your desired years, genres, ratings, single search criteria, and sorting options in order to view movies that fit those parameters.  Hover over the movie poster images in order to view their titles and values for the specified criteria.  Feel free to add and remove years, genres, and ratings as well as change the criteria and sorting options as you see fit (and you can click and drag the posters!).</p>
 						</ul>
 					</div>
 				</div>
 			</div>
 
 			<div id="right">
-				<div id="info"></div>
-				<div id="pref"></div>
+				<div id="fixed_right">
+					<div id="pref"></div>
+					<div id="info"></div>
+				</div>
 			</div>
 		</div>
 				
@@ -621,7 +646,7 @@
 
 					$("#info").html("");
 
-					$("#info").append("<p>"+mov["Film"]+"</p><br /><p>"+singleCharacteristic + ": " + mov[singleCharacteristic]+ "</p>");
+					$("#info").append("<p><span class='movie_title'>"+mov["Film"]+"</span><br />"+singleCharacteristic + ": " + mov[singleCharacteristic]+ "</p>");
 					
 					$(this).css("opacity", 1);
 					$("#info").css("visibility", "visible");
@@ -673,7 +698,8 @@
 					console.log("Empty...");
 					relevant = {'data' : [], 'unused' : []};
 					// please select genres
-					return;
+					if ($("#movie_grid li").length == 0)
+						return;
 				}
 				
 				// DO ALL D3 STUFF HERE
@@ -864,7 +890,7 @@
 
 				if(years.length > 0){
 					$("#pref").css("visibility", "visible");
-					var p1 = $("#pref").append("<p><u>Years:</u> ")
+					var p1 = $("#pref").append("<p><span class='sidebar_head'>Years:</span> ")
 					years.forEach(function(year){
 						p1.append(year+", ");
 					});
@@ -873,7 +899,7 @@
 
 				if(genres.length > 0){
 					$("#pref").css("visibility", "visible");
-					var p = $("#pref").append("<p><u>Genres:</u> ");
+					var p = $("#pref").append("<p><span class='sidebar_head'>Genres:</span> ");
 					genres.forEach(function(g){
 						p.append(g+", ");
 					});
@@ -882,7 +908,7 @@
 
 				if(ratings.length > 0){
 					$("#pref").css("visibility", "visible");
-					var p2 = $("#pref").append("<p><u>Ratings:</u> ");
+					var p2 = $("#pref").append("<p><span class='sidebar_head'>Ratings:</span> ");
 					ratings.forEach(function(r){
 						p2.append(r+", ");
 					});
@@ -891,17 +917,17 @@
 
 				if(singleCharacteristic != ""){
 					$("#pref").css("visibility", "visible");
-					var p3 = $("#pref").append("<p><u>Criteria:</u> " + singleCharacteristic + "</p>");
+					var p3 = $("#pref").append("<p><span class='sidebar_head'>Parameter:</span> " + singleCharacteristic + "</p>");
 				}
 
 				var p4;
 				if(highLow == 0){
 					$("#pref").css("visibility", "visible");
-					p4 = $("#pref").append("<p><u>Sort By:</u> Lowest</p>");
+					p4 = $("#pref").append("<p><span class='sidebar_head'>Sort By:</span> Lowest</p>");
 				} 
 				if(highLow == 1){
 					$("#pref").css("visibility", "visible");
-					p4 = $("#pref").append("<p><u>Sort By:</u> Highest</p>");
+					p4 = $("#pref").append("<p><span class='sidebar_head'>Sort By:</span> Highest</p>");
 				}
 
 
