@@ -122,7 +122,7 @@
 			}
 
 			.file_menu li:hover {
-			    background-color: #79D3CF;
+			    background-color: #CCCCCC;
 			}
 
 			.file_menu li a {
@@ -813,22 +813,22 @@
 						siblings.css("background-color","#ECECEC");
 					}
 					$(this).unbind('mouseover mouseout');
-					siblings.mouseover(function() { $(this).css("background-color","#79D3CF"); });
+					siblings.mouseover(function() { $(this).css("background-color","#CCCCCC"); });
 					siblings.mouseout(function() { $(this).css("background-color","#ECECEC"); });
 					checkbox.prop('checked', true);
 					$.each(siblings, function () {
 						$(this).children().first().prop('checked', false);
 					});
-					$(this).css('background-color','rgb(90, 176, 178)');
+					$(this).css('background-color','rgb(180, 180, 180)');
 				} else {
 					if (checkbox.prop('checked') == false) {
 						checkbox.prop('checked', true);
 						$(this).unbind('mouseover mouseout');
-						$(this).css('background-color','rgb(90, 176, 178)');
+						$(this).css('background-color','rgb(180, 180, 180)');
 					} else {
 						checkbox.prop('checked', false);
 						$(this).css('background-color','#ECECEC');
-						$(this).mouseover(function() { $(this).css("background-color","#79D3CF"); });
+						$(this).mouseover(function() { $(this).css("background-color","#CCCCCC"); });
 						$(this).mouseout(function() { $(this).css("background-color","#ECECEC"); });
 					}
 				}
