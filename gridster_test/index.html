@@ -446,6 +446,16 @@
 			var hoverEnabled = true;
 
 			var svg = d3.select("#left").append("svg").attr("width", "110").attr("height", "500");
+
+
+			//groups
+			
+			// var g1 = svg.append("g");
+			// var g2 = svg.append("g");
+			// var g3 = svg.append("g");
+			// var g4 = svg.append("g");
+			// var g5 = svg.append("g");
+
 			var rect1 = svg.append("rect").attr("x", 5).attr("y", 25).attr("width", 90).attr("height", 90);
 			var rect2 = svg.append("rect").attr("x", 5).attr("y", 115).attr("width", 90).attr("height", 90);
 			var rect3 = svg.append("rect").attr("x", 5).attr("y", 205).attr("width", 90).attr("height", 90);
@@ -465,6 +475,8 @@
 			// var pattern3 = svg.append("pattern");
 			// var pattern4 = svg.append("pattern");
 			// var pattern5 = svg.append("pattern");
+
+
 
 
 			var scale = d3.scale.linear();
@@ -536,11 +548,11 @@
   			var bucket5;
 
   			//Arrays for bucket ranges
-  			var bucketCounter1 = 0;
-  			var bucketCounter2 = 0;
-  			var bucketCounter3 = 0;
-  			var bucketCounter4 = 0;
-  			var bucketCounter5 = 0;
+  			var bucketCounter1;
+  			var bucketCounter2;
+  			var bucketCounter3;
+  			var bucketCounter4;
+  			var bucketCounter5;
 
 
 
@@ -581,13 +593,19 @@
 				console.log("minCurrVal: " + minCurrVal);
 				console.log("maxCurrVal: " + maxCurrVal);
 
+				bucket1 = 0;
+				bucket2 = 0;
+				bucket3 = 0;
+				bucket4 = 0;
+				bucket5 = 0;
+
 				scale = scale.domain([minCurrVal,maxCurrVal]).range([500,2]);
 				range = maxCurrVal-minCurrVal;
-				bucket1 = (range * (1/5)).toFixed(3); //20
-				bucket2 = (range * (2/5)).toFixed(3); //40
-				bucket3 = (range * (3/5)).toFixed(3); //60
-				bucket4 = (range * (4/5)).toFixed(3); //80
-				bucket5 = range.toFixed(3); //100
+				bucket1 = (minCurrVal + range * (4/5)).toFixed(3); //20
+				bucket2 = (minCurrVal + range * (3/5)).toFixed(3); //40
+				bucket3 = (minCurrVal + range * (2/5)).toFixed(3); //60
+				bucket4 = (minCurrVal + range * (1/5)).toFixed(3); //80
+				bucket5 = minCurrVal; //100
 
 				// text1 = text1.text(bucket5);
 				// text2 = text2.text(bucket4);
@@ -660,39 +678,204 @@
 
 				rect5
 					.attr("class", "axis")
-					.attr("transform", "translate(0, 0)")
+					//.attr("transform", "translate(0, 0)")
 					.attr("fill", "rgb(255,"+(scaleColor(scaleFactor1)).toFixed(0)+","+(scaleColor(scaleFactor1)).toFixed(0)+")")
 					.call(axis);
 
 				rect4
 					.attr("class", "axis")
-					.attr("transform", "translate(0, 0)")
+					//.attr("transform", "translate(0, 0)")
 					.attr("fill", "rgb(255,"+(scaleColor(scaleFactor2)).toFixed(0)+","+(scaleColor(scaleFactor2)).toFixed(0)+")")
 					.call(axis);
 
 				rect3
 					.attr("class", "axis")
-					.attr("transform", "translate(0, 0)")
+					//.attr("transform", "translate(0, 0)")
 					.attr("fill", "rgb(255,"+(scaleColor(scaleFactor3)).toFixed(0)+","+(scaleColor(scaleFactor3)).toFixed(0)+")")
 					.call(axis);
 
 				rect2
 					.attr("class", "axis")
-					.attr("transform", "translate(0, 0)")
+					//.attr("transform", "translate(0, 0)")
 					.attr("fill", "rgb(255,"+(scaleColor(scaleFactor4)).toFixed(0)+","+(scaleColor(scaleFactor4)).toFixed(0)+")")
 					.call(axis);
 
 				rect1
 					.attr("class", "axis")
-					.attr("transform", "translate(0, 0)")
+					//.attr("transform", "translate(0, 0)")
 					.attr("fill", "rgb(255,"+(scaleColor(scaleFactor5)).toFixed(0)+","+(scaleColor(scaleFactor5)).toFixed(0)+")")
 					.call(axis);
 
-				svg.append("p").text(bucket1);
-				svg.append("p").text(bucket2);
-				svg.append("p").text(bucket3);
-				svg.append("p").text(bucket4);
-				svg.append("p").text(bucket5);
+					
+				console.log("buckets");
+				console.log(bucket1);
+				console.log(bucket2);
+				console.log(bucket3);
+				console.log(bucket4);
+				console.log(bucket5);
+
+				svg.selectAll("text").remove();
+
+				if(highLow == 0){
+					svg.append("text")
+						.attr("x", 10)
+						.attr("y", 470)
+						.attr("font-family", "Verdana")
+						.attr("font-size", 10)
+						.attr("fill", "black")
+						.style("z-index","999")
+						.text(Math.abs(bucket5).toFixed(0)+"");
+
+					svg.append("text")
+						.attr("x", 10)
+						.attr("y", 380)
+						.attr("font-family", "Verdana")
+						.attr("font-size", 10)
+						.attr("fill", "black")
+						.style("z-index","999")
+						.text(Math.abs(bucket4).toFixed(0)+"");
+
+					svg.append("text")
+						.attr("x", 10)
+						.attr("y", 290)
+						.attr("font-family", "Verdana")
+						.attr("font-size", 10)
+						.attr("fill", "black")
+						.style("z-index","999")
+						.text(Math.abs(bucket3).toFixed(0)+"");
+
+					svg.append("text")
+						.attr("x", 10)
+						.attr("y", 200)
+						.attr("font-family", "Verdana")
+						.attr("font-size", 10)
+						.attr("fill", "black")
+						.style("z-index","999")
+						.text(Math.abs(bucket2).toFixed(0)+"");
+
+					svg.append("text")
+						.attr("x", 10)
+						.attr("y", 110)
+						.attr("font-family", "Verdana")
+						.attr("font-size", 10)
+						.attr("fill", "black")
+						.style("z-index","999")
+						.text(Math.abs(bucket1).toFixed(0)+"");
+
+					svg.append("text")
+						.attr("x", 10)
+						.attr("y", 35)
+						.attr("font-family", "Verdana")
+						.attr("font-size", 10)
+						.attr("fill", "black")
+						.style("z-index","999")
+						.text(Math.abs(maxCurrVal).toFixed(0)+"");
+					} else{
+						svg.append("text")
+						.attr("x", 10)
+						.attr("y", 35)
+						.attr("font-family", "Verdana")
+						.attr("font-size", 10)
+						.attr("fill", "black")
+						.style("z-index","999")
+						.text(Math.abs(bucket5).toFixed(0)+"");
+
+					svg.append("text")
+						.attr("x", 10)
+						.attr("y", 110)
+						.attr("font-family", "Verdana")
+						.attr("font-size", 10)
+						.attr("fill", "black")
+						.style("z-index","999")
+						.text(Math.abs(bucket4).toFixed(0)+"");
+
+					svg.append("text")
+						.attr("x", 10)
+						.attr("y", 200)
+						.attr("font-family", "Verdana")
+						.attr("font-size", 10)
+						.attr("fill", "black")
+						.style("z-index","999")
+						.text(Math.abs(bucket3).toFixed(0)+"");
+
+					svg.append("text")
+						.attr("x", 10)
+						.attr("y", 290)
+						.attr("font-family", "Verdana")
+						.attr("font-size", 10)
+						.attr("fill", "black")
+						.style("z-index","999")
+						.text(Math.abs(bucket2).toFixed(0)+"");
+
+					svg.append("text")
+						.attr("x", 10)
+						.attr("y", 380)
+						.attr("font-family", "Verdana")
+						.attr("font-size", 10)
+						.attr("fill", "black")
+						.style("z-index","999")
+						.text(Math.abs(bucket1).toFixed(0)+"");
+
+					svg.append("text")
+						.attr("x", 10)
+						.attr("y", 470)
+						.attr("font-family", "Verdana")
+						.attr("font-size", 10)
+						.attr("fill", "black")
+						.style("z-index","999")
+						.text(Math.abs(maxCurrVal).toFixed(0)+"");
+					}
+
+
+
+				
+				// svg.append("text")
+				// 	.attr("x", 10)
+				// 	.attr("y", 295)
+				// 	.attr("font-family", "Verdana")
+				// 	.attr("font-size", 10)
+				// 	.attr("fill", "black")
+				// 	.style("z-index","999")
+				// 	.text(Math.abs(bucket3).toFixed(0)+"");
+
+				
+				// svg.append("text")
+				// 	.attr("x", 10)
+				// 	.attr("y", 205)
+				// 	.attr("font-family", "Verdana")
+				// 	.attr("font-size", 10)
+				// 	.attr("fill", "black")
+				// 	.style("z-index","999")
+				// 	.text(Math.abs(bucket2).toFixed(0)+"");
+
+				
+				// svg.append("text")
+				// 	.attr("x", 10)
+				// 	.attr("y", 115)
+				// 	.attr("font-family", "Verdana")
+				// 	.attr("font-size", 10)
+				// 	.attr("fill", "black")
+				// 	.style("z-index","999")
+				// 	.text(Math.abs(bucket1).toFixed(0)+"");
+
+				
+				// svg.append("text")
+				// 	.attr("x", 10)
+				// 	.attr("y", 385)
+				// 	.attr("font-family", "Verdana")
+				// 	.attr("font-size", 10)
+				// 	.attr("fill", "black")
+				// 	.style("z-index","999")
+				// 	.text(Math.abs(bucket4).toFixed(0)+"");
+
+				// svg.append("text")
+				// 	.attr("x", 10)
+				// 	.attr("y", 35)
+				// 	.attr("font-family", "Verdana")
+				// 	.attr("font-size", 10)
+				// 	.attr("fill", "black")
+				// 	.style("z-index","999")
+				// 	.text(Math.abs(maxCurrVal).toFixed(0)+"");
 
 				//put min and max into spots on the range
 				$(function() {
