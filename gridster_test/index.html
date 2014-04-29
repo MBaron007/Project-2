@@ -489,6 +489,7 @@
 			//User preferences 
 			var multSelectors = [];
 			var singleCharacteristic;
+			var correctSingleCar;
 			var years = [];
 			var genres = [];
 			var ratings = [];
@@ -568,7 +569,7 @@
 
 					$("#info").html("");
 
-					$("#info").append("<p><span class='movie_title'>"+mov["Film"]+"</span><br />"+singleCharacteristic + ": " + mov[singleCharacteristic]+ "</p>");
+					$("#info").append("<p><span class='movie_title'>"+mov["Film"]+"</span><br />"+correctSingleCar + ": " + mov[singleCharacteristic]+ "</p>");
 					
 					$(this).css("opacity", 1);
 					$("#info").css("visibility", "visible");
@@ -838,8 +839,30 @@
 				}
 
 				if(singleCharacteristic != ""){
+					if(singleCharacteristic == "Number_of_Theatres_in_Opening_Weekend"){
+							correctSingleCar = "Number of Theatres in Opening Weekend";
+						} else if( singleCharacteristic == "Worldwide"){
+							correctSingleCar = "Worldwide Gross Profit";
+						} else if( singleCharacteristic == "Opening_Weekend"){
+							correctSingleCar = "Opening Weekend Revenue";
+						} else if( singleCharacteristic == "Audience_Score"){
+							correctSingleCar = "Audience Score";
+						} else if( singleCharacteristic == "Market_Profitability"){
+							correctSingleCar = "Market Profitability";
+						} else if(singleCharacteristic == "Box_Office_Avg_Opening_Wknd"){
+							correctSingleCar = "Box Office Average Revenue Opening Weekend";
+						} else if( singleCharacteristic == "Budget"){
+							correctSingleCar = "Budget";
+						} else if(singleCharacteristic == "Foreign_Gross"){
+							correctSingleCar = "Foreign Gross Profit";
+						} else if(singleCharacteristic == "Critics_Score"){
+							correctSingleCar = "Critics Score";
+						} else {
+							correctSingleCar = "Domestic Gross Profit";
+						}
+
 					$("#pref").css("visibility", "visible");
-					var p3 = $("#pref").append("<p><span class='sidebar_head'>Parameter:</span> " + singleCharacteristic + "</p>");
+					var p3 = $("#pref").append("<p><span class='sidebar_head'>Parameter:</span> " + correctSingleCar + "</p>");
 				}
 
 				var p4;
