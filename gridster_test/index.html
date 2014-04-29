@@ -248,7 +248,7 @@
 
 			#left {
 				float: left;
-				margin-top: 20px;
+				margin-top: 100px;
 				position:fixed;
 				top:0px;
 				z-index: 999;
@@ -413,8 +413,8 @@
 
 		<div id="wrapper">
 			<div id="left">
-				<p id="max_sort">Max: <span id="max_val">100</span> </p>
-				<p id="min_sort">Min: <span id="min_val">0</span> </p>
+<!-- 				<p id="max_sort">Max: <span id="max_val"></span> </p>
+				<p id="min_sort">Min: <span id="min_val"></span> </p> -->
 			    <div id="range"></div>
 			</div>
 
@@ -446,11 +446,26 @@
 			var hoverEnabled = true;
 
 			var svg = d3.select("#left").append("svg").attr("width", "110").attr("height", "500");
-			var rect1 = svg.append("rect").attr("x", 5).attr("y", 5).attr("width", 90).attr("height", 90);
-			var rect2 = svg.append("rect").attr("x", 5).attr("y", 103).attr("width", 90).attr("height", 90);
-			var rect3 = svg.append("rect").attr("x", 5).attr("y", 201).attr("width", 90).attr("height", 90);
-			var rect4 = svg.append("rect").attr("x", 5).attr("y", 299).attr("width", 90).attr("height", 90);
-			var rect5 = svg.append("rect").attr("x", 5).attr("y", 397).attr("width", 90).attr("height", 90);
+			var rect1 = svg.append("rect").attr("x", 5).attr("y", 25).attr("width", 90).attr("height", 90);
+			var rect2 = svg.append("rect").attr("x", 5).attr("y", 115).attr("width", 90).attr("height", 90);
+			var rect3 = svg.append("rect").attr("x", 5).attr("y", 205).attr("width", 90).attr("height", 90);
+			var rect4 = svg.append("rect").attr("x", 5).attr("y", 295).attr("width", 90).attr("height", 90);
+			var rect5 = svg.append("rect").attr("x", 5).attr("y", 385).attr("width", 90).attr("height", 90);
+
+			//text attributes
+			// var text1 = rect1.append("p");
+			// var text2 = rect2.append("p");
+			// var text3 = rect3.append("p");
+			// var text4 = rect4.append("p");
+			// var text5 = rect5.append("p");
+
+			// var svgDef =  svg.append("defs");
+			// var pattern1 = svg.append("pattern");
+			// var pattern2 = svg.append("pattern");
+			// var pattern3 = svg.append("pattern");
+			// var pattern4 = svg.append("pattern");
+			// var pattern5 = svg.append("pattern");
+
 
 			var scale = d3.scale.linear();
 
@@ -511,6 +526,7 @@
   			var minCurrVal;
   			var maxCurrVal;
   			var range;
+  			var currentValue;
 
   			//For determing ranges for buckets
   			var bucket1;
@@ -552,6 +568,8 @@
 					widget_base_dimensions: [140, 140]
 				}).data('gridster');
 
+				currentSingleCharacteristic = [];
+
 				$.each(relevant.data, function(i){
 					var myCombo = combos[Math.floor(Math.random() * combos.length)];
 					gridster.add_widget('<li class="new"><img width="100%" height="100%" id="' + relevant.data[i].id + '" src="../posters/'+relevant.data[i].id+'/full.jpg"/></li>', myCombo[0], myCombo[1]);
@@ -565,11 +583,26 @@
 
 				scale = scale.domain([minCurrVal,maxCurrVal]).range([500,2]);
 				range = maxCurrVal-minCurrVal;
-				bucket1 = range * (1/5); //20
-				bucket2 = range * (2/5); //40
-				bucket3 = range * (3/5); //60
-				bucket4 = range * (4/5); //80
-				bucket5 = range; //100
+				bucket1 = (range * (1/5)).toFixed(3); //20
+				bucket2 = (range * (2/5)).toFixed(3); //40
+				bucket3 = (range * (3/5)).toFixed(3); //60
+				bucket4 = (range * (4/5)).toFixed(3); //80
+				bucket5 = range.toFixed(3); //100
+
+				// text1 = text1.text(bucket5);
+				// text2 = text2.text(bucket4);
+				// text3 = text3.text(bucket3);
+				// text4 = text4.text(bucket2);
+				// text5 = text5.text(bucket1);
+
+
+				bucketCounter1 = 0;
+				bucketCounter2 = 0;
+				bucketCounter3 = 0;
+				bucketCounter4 = 0;
+				bucketCounter5 = 0;
+
+				console.log("Bucket sum before: " + bucketCounter1+bucketCounter2+bucketCounter3+bucketCounter4+bucketCounter5);
 
 				$.each(currentSingleCharacteristic, function(i) {
 					if (currentSingleCharacteristic[i] < bucket1) {
@@ -580,49 +613,86 @@
 						bucketCounter3++;
 					} else if (currentSingleCharacteristic[i] > bucket3 && bucket4 >= currentSingleCharacteristic[i]) {
 						bucketCounter4++;
-					} else if (currentSingleCharacteristic[i] > bucket4 ) {
+					} else {
 						bucketCounter5++;
 					}
 				});
-				console.log(bucketCounter1/currentSingleCharacteristic.length);
-				console.log(bucketCounter2/currentSingleCharacteristic.length);
-				console.log(bucketCounter3/currentSingleCharacteristic.length);
-				console.log(bucketCounter4/currentSingleCharacteristic.length);
-				console.log(bucketCounter5/currentSingleCharacteristic.length);
+
+				// console.log("1: " + bucketCounter1);
+				// console.log("2: " + bucketCounter2);
+				// console.log("3: " + bucketCounter3);
+				// console.log("4: " + bucketCounter4);
+				// console.log("5: " + bucketCounter5);
+
+
+				console.log("Bucket sum after: " + bucketCounter1+bucketCounter2+bucketCounter3+bucketCounter4+bucketCounter5);
+
+				console.log(currentSingleCharacteristic.length);
+
+				var scaleFactor1 = (bucketCounter1/currentSingleCharacteristic.length).toFixed(3);
+				var scaleFactor2 = (bucketCounter2/currentSingleCharacteristic.length).toFixed(3);
+				var scaleFactor3 = (bucketCounter3/currentSingleCharacteristic.length).toFixed(3);
+				var scaleFactor4 = (bucketCounter4/currentSingleCharacteristic.length).toFixed(3);
+				var scaleFactor5 = (bucketCounter5/currentSingleCharacteristic.length).toFixed(3);
+
+
+				console.log((bucketCounter1/currentSingleCharacteristic.length).toFixed(3));
+				console.log((bucketCounter2/currentSingleCharacteristic.length).toFixed(3));
+				console.log((bucketCounter3/currentSingleCharacteristic.length).toFixed(3));
+				console.log((bucketCounter4/currentSingleCharacteristic.length).toFixed(3));
+				console.log((bucketCounter5/currentSingleCharacteristic.length).toFixed(3));
+
+				var scaleColor = d3.scale.linear().domain([0,1]).range([255,0]);
+
+
+				// pattern1
+		  //          	.attr("id", "one")
+		  //           .attr("width", 90)
+		  //           .attr("height", 90)
+		  //             .append("p").text(bucket1)
+		  //             //.attr("xlink:href", "posters/"+post.id+"/full.jpg")
+		  //             .style("width", 90)
+		  //             .style("height", 90);
 
 				//multiply lengths by rgb values
 
 				var axis = d3.svg.axis().scale(scale).orient("left");
 
-				rect1
+				rect5
 					.attr("class", "axis")
-					.attr("transform", "translate(100, 0)")
-					.attr("fill", "rgb("+255*bucketCounter1/currentSingleCharacteristic.length+",0,0)")
-					.call(axis);
-
-				rect2
-					.attr("class", "axis")
-					.attr("transform", "translate(100, 0)")
-					.attr("fill", "rgb("+255*bucketCounter2/currentSingleCharacteristic.length+",0,0)")
-					.call(axis);
-
-				rect3
-					.attr("class", "axis")
-					.attr("transform", "translate(100, 0)")
-					.attr("fill", "rgb("+255*bucketCounter3/currentSingleCharacteristic.length+",0,0)")
+					.attr("transform", "translate(0, 0)")
+					.attr("fill", "rgb(255,"+(scaleColor(scaleFactor1)).toFixed(0)+","+(scaleColor(scaleFactor1)).toFixed(0)+")")
 					.call(axis);
 
 				rect4
 					.attr("class", "axis")
-					.attr("transform", "translate(100, 0)")
-					.attr("fill", "rgb("+255*bucketCounter4/currentSingleCharacteristic.length+",0,0)")
+					.attr("transform", "translate(0, 0)")
+					.attr("fill", "rgb(255,"+(scaleColor(scaleFactor2)).toFixed(0)+","+(scaleColor(scaleFactor2)).toFixed(0)+")")
 					.call(axis);
 
-				rect5
+				rect3
 					.attr("class", "axis")
-					.attr("transform", "translate(100, 0)")
-					.attr("fill", "rgb("+255*bucketCounter5/currentSingleCharacteristic.length+",0,0)")
+					.attr("transform", "translate(0, 0)")
+					.attr("fill", "rgb(255,"+(scaleColor(scaleFactor3)).toFixed(0)+","+(scaleColor(scaleFactor3)).toFixed(0)+")")
 					.call(axis);
+
+				rect2
+					.attr("class", "axis")
+					.attr("transform", "translate(0, 0)")
+					.attr("fill", "rgb(255,"+(scaleColor(scaleFactor4)).toFixed(0)+","+(scaleColor(scaleFactor4)).toFixed(0)+")")
+					.call(axis);
+
+				rect1
+					.attr("class", "axis")
+					.attr("transform", "translate(0, 0)")
+					.attr("fill", "rgb(255,"+(scaleColor(scaleFactor5)).toFixed(0)+","+(scaleColor(scaleFactor5)).toFixed(0)+")")
+					.call(axis);
+
+				svg.append("p").text(bucket1);
+				svg.append("p").text(bucket2);
+				svg.append("p").text(bucket3);
+				svg.append("p").text(bucket4);
+				svg.append("p").text(bucket5);
 
 				//put min and max into spots on the range
 				$(function() {
@@ -636,6 +706,7 @@
 					checkID = $(checkID).attr("id");
 					//console.log(checkID);
 					var mov;
+
 					relevant.data.forEach(function(movie){
 						if(movie.id == checkID){
 							mov = movie;
@@ -645,10 +716,13 @@
 						}
 					});
 
+					currentValue = mov[singleCharacteristic];
+
 					$("#info").html("");
 
 					$("#info").append("<p><span class='movie_title'>"+mov["Film"]+"</span><br />"+correctSingleCar + ": " + mov[singleCharacteristic]+ "</p>");
 					
+
 					$(this).css("opacity", 1);
 					$("#info").css("visibility", "visible");
 					// //$(this).wrap("<div class='caption'></div>");
