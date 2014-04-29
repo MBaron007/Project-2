@@ -239,10 +239,7 @@
 
 			#left {
 				float: left;
-				width:100px;
-				height:350px;
-				margin-top: 200px;
-				background-color: rgb(79, 137, 139);
+				margin-top: 20px;
 				position:fixed;
 				top:0px;
 				z-index: 999;
@@ -251,7 +248,7 @@
 			}
 
 			#min_sort {
-				padding-top: 280px;
+				padding-top: 20px;
 				color: #FFFFFF;
 
 			}
@@ -423,7 +420,13 @@
 			var checkTime = 0;
 			var hoverEnabled = true;
 
-			var svg = d3.select("#left").append("svg").attr("width", "100").attr("height", "350");
+			var svg = d3.select("#left").append("svg").attr("width", "110").attr("height", "500");
+			var rect1 = svg.append("rect").attr("x", 5).attr("y", 5).attr("width", 90).attr("height", 90);
+			var rect2 = svg.append("rect").attr("x", 5).attr("y", 103).attr("width", 90).attr("height", 90);
+			var rect3 = svg.append("rect").attr("x", 5).attr("y", 201).attr("width", 90).attr("height", 90);
+			var rect4 = svg.append("rect").attr("x", 5).attr("y", 299).attr("width", 90).attr("height", 90);
+			var rect5 = svg.append("rect").attr("x", 5).attr("y", 397).attr("width", 90).attr("height", 90);
+
 			var scale = d3.scale.linear();
 
 			// for the scroll down menus
@@ -481,6 +484,22 @@
   			var currentSingleCharacteristic = [];
   			var minCurrVal;
   			var maxCurrVal;
+  			var range;
+
+  			//For determing ranges for buckets
+  			var bucket1;
+  			var bucket2;
+  			var bucket3;
+  			var bucket4;
+  			var bucket5;
+
+  			//Arrays for bucket ranges
+  			var bucketCounter1 = 0;
+  			var bucketCounter2 = 0;
+  			var bucketCounter3 = 0;
+  			var bucketCounter4 = 0;
+  			var bucketCounter5 = 0;
+
 
 
   			function renderData() {
@@ -518,7 +537,66 @@
 				console.log("minCurrVal: " + minCurrVal);
 				console.log("maxCurrVal: " + maxCurrVal);
 
-				scale = scale.domain([minCurrVal,maxCurrVal]).range([0,1]);
+				scale = scale.domain([minCurrVal,maxCurrVal]).range([500,2]);
+				range = maxCurrVal-minCurrVal;
+				bucket1 = range * (1/5); //20
+				bucket2 = range * (2/5); //40
+				bucket3 = range * (3/5); //60
+				bucket4 = range * (4/5); //80
+				bucket5 = range; //100
+
+				$.each(currentSingleCharacteristic, function(i) {
+					if (currentSingleCharacteristic[i] < bucket1) {
+						bucketCounter1++;
+					} else if (currentSingleCharacteristic[i] > bucket1 && bucket2 >=currentSingleCharacteristic[i]) {
+						bucketCounter2++;
+					} else if (currentSingleCharacteristic[i] > bucket2 && bucket3 >= currentSingleCharacteristic[i]) {
+						bucketCounter3++;
+					} else if (currentSingleCharacteristic[i] > bucket3 && bucket4 >= currentSingleCharacteristic[i]) {
+						bucketCounter4++;
+					} else if (currentSingleCharacteristic[i] > bucket4 ) {
+						bucketCounter5++;
+					}
+				});
+				console.log(bucketCounter1/currentSingleCharacteristic.length);
+				console.log(bucketCounter2/currentSingleCharacteristic.length);
+				console.log(bucketCounter3/currentSingleCharacteristic.length);
+				console.log(bucketCounter4/currentSingleCharacteristic.length);
+				console.log(bucketCounter5/currentSingleCharacteristic.length);
+
+				//multiply lengths by rgb values
+
+				var axis = d3.svg.axis().scale(scale).orient("left");
+
+				rect1
+					.attr("class", "axis")
+					.attr("transform", "translate(100, 0)")
+					.attr("fill", "rgb("+255*bucketCounter1/currentSingleCharacteristic.length+",0,0)")
+					.call(axis);
+
+				rect2
+					.attr("class", "axis")
+					.attr("transform", "translate(100, 0)")
+					.attr("fill", "rgb("+255*bucketCounter2/currentSingleCharacteristic.length+",0,0)")
+					.call(axis);
+
+				rect3
+					.attr("class", "axis")
+					.attr("transform", "translate(100, 0)")
+					.attr("fill", "rgb("+255*bucketCounter3/currentSingleCharacteristic.length+",0,0)")
+					.call(axis);
+
+				rect4
+					.attr("class", "axis")
+					.attr("transform", "translate(100, 0)")
+					.attr("fill", "rgb("+255*bucketCounter4/currentSingleCharacteristic.length+",0,0)")
+					.call(axis);
+
+				rect5
+					.attr("class", "axis")
+					.attr("transform", "translate(100, 0)")
+					.attr("fill", "rgb("+255*bucketCounter5/currentSingleCharacteristic.length+",0,0)")
+					.call(axis);
 
 				//put min and max into spots on the range
 				$(function() {
